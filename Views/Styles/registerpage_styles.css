@@ -1,3 +1,11 @@
 .red-text {
     color:red;
 }
+
+.form-wrapper {
+    width: 70%;
+}
+
+.btn {
+    margin-bottom: 10px;
+}

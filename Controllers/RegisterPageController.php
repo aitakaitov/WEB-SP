@@ -3,7 +3,7 @@
 // Variables
 require_once("settings.php");
 // Controller interface
-require_once(CONTROLLERS_DIR."IController.php");
+require_once(CONTROLLERS_DIR."/IController.php");
 
 /**
  * Class RegisterPageController
