@@ -26,10 +26,10 @@ class DBModel
      * Returns all approved articles
      * @return array Articles
      */
-    public function getAllArticles():array
+    public function getAllApprovedArticles():array
     {
         $query = "SELECT * FROM ".TABLE_ARTICLES." WHERE (approved = 1) ORDER BY id_article DESC";
-        return $this->pdo->query($query)->fetchAll();
+        return $this -> pdo -> query($query) -> fetchAll();
     }
 
     /**
@@ -48,9 +48,43 @@ class DBModel
             return false;
         }
 
-        // If empty
+        // If empty, add user
         $query = "INSERT INTO ".TABLE_USERS." VALUES (".$userInfo['nickname'].", ".$userInfo['name'].", ".$userInfo['surname'].", ".$userInfo['email'].", ".$userInfo['password'].", "."0}";
-         return true;
+        $this -> pdo -> query($query);
+        return true;
+    }
+
+    /**
+     * Return privilege for user name
+     * @param $userName user name
+     * @return mixed privilege
+     */
+    public function getUserPrivileges($userName)
+    {
+        $query = "SELECT * FROM ".TABLE_USERS." WHERE nick = ".$userName;
+        $result = $this -> pdo -> query($query) -> fetchAll();
+
+        return $result['privilege'];
+    }
+
+    /**
+     * Check if user exists in database
+     * @param $nick nickname
+     * @param $password password
+     * @return bool user exists
+     */
+    public function userLoginCheck($nick, $password)
+    {
+        $query = "SELECT * FROM ".TABLE_USERS." WHERE nick = ".$nick." AND password = ".$password;
+        $result = $this -> pdo -> query($query) -> fetchAll();
+
+        if ($result -> rowCount() == 0) // If no such user exists
+        {
+            return false;
+        } else
+            {
+                return true;
+            }
     }
 
 }

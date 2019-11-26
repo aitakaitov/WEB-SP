@@ -34,7 +34,7 @@ class MainPageController implements IController
         $templateData = [];
 
         //$templateData['articles'] = null;    // TODO
-        $templateData['articles'] = $this -> db ->getAllArticles();
+        $templateData['articles'] = $this -> db ->getAllApprovedArticles();
 
         // Start the output buffer
         ob_start();

@@ -6,12 +6,15 @@
  */
 class StandardTemplates
 {
+    private $login;
+
     /**
      * StandardTemplates constructor.
      */
     public function __construct()
     {
-
+        require_once(SESS_DIR."/WebLogin.php");
+        $this -> login = new WebLogin();
     }
 
     /**
@@ -38,7 +41,8 @@ class StandardTemplates
                 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
                 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-                <?php
+                <?php   // --------------------------------------------------------------------------------- DYNAMICALLY INCLUDE STYLESHEETS ----------------------------------------------------------------------
+
                     foreach ($styleSheets as $sheet)    // Link styles
                     {
                         echo "<link rel='stylesheet' href=".$sheet.">";
@@ -56,21 +60,75 @@ class StandardTemplates
                              <span class="navbar-toggler-icon"></span>
                          </button>
                          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                             <ul class="navbar-nav ml-auto">
-                                 <?php                                 // Print out all pages that we should print out (different for admins, logged, visitors)
+                             <ul class="navbar-nav nav ml-auto">
+
+                                 <?php  //------------------------------------------------------------------------ PRINT OUT PAGES INTO MENU -----------------------------------------------------------------
+
+                                 // Print out all pages that we should print out (different for admins, logged, visitors)
                                     foreach ($pages as $p)
                                     {
-                                        if ($p == $currentPageKey)  // current page in bold font
+                                        if ($p == "register" && $this -> login ->isUserLogged())  //------------------------------------------ LOGGED IN -> NO REGISTER PAGE ----------------------------
+                                        {
+                                            continue;       // Skip register page if user is logged in
+                                        }
+                                        else if ($p == $currentPageKey)
                                         {
                                             echo "<li class='nav-item'><a class='nav-link' href='index.php?page=".$p."'><strong>".WEB_PAGES[$p]['title']."</strong></a></li>";
-                                        } else
+
+                                        }
+                                            else
                                             {
                                                 echo "<li class='nav-item'><a class='nav-link' href='index.php?page=".$p."'>".WEB_PAGES[$p]['title']."</a></li>";
                                             }
                                     }
                                  ?>
                              </ul>
+                             <?php
+                                    // -------------------------------------------------------- USER NOT LOGGED IN -> LOGIN FORM IN NAVBAR -------------------------------------------------------------------------------
+
+                                if (!$this -> login ->isUserLogged())   // If user is not logged in -> include login form in navbar
+                                {
+                             ?>
+                             <ul class="navbar-nav nav mr pull-right">
+                                 <li class="dropdown">
+                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Login <span
+                                                 class="sparet"> </span></a>
+                                     <ul id="login-dp" class="dropdown-menu">
+                                         <li>
+                                             <div class="row h-100 justify-content-center align-items-center">
+                                                 <div class="col-md-12">
+                                                     <form class="form" role="form" method="post"
+                                                           action="Actions/LoginAction.php" id="login-nav">
+                                                         <div class="form-group">
+                                                             <label class="sr-only" for="input_nickname">Email
+                                                                 address</label>
+                                                             <input type="text" name="username" class="form-control"
+                                                                    id="input_nickname" placeholder="Email address"
+                                                                    required>
+                                                         </div>
+                                                         <div class="form-group">
+                                                             <label class="sr-only"
+                                                                    for="input_password">Password</label>
+                                                             <input type="password" name="password" class="form-control"
+                                                                    id="input_password" placeholder="Password" required>
+                                                         </div>
+                                                         <div class="form-group">
+                                                             <button class="btn btn-primary btn-block" type="submit">
+                                                                 Sign in
+                                                             </button>
+                                                         </div>
+                                                     </form>
+                                                 </div>
+                                             </div>
+                                         </li>
+                                     </ul>
+                                 </li>
+                             </ul>
                          </div>
+                        <?php           // -------------------------------------------------------- END OF => USER NOT LOGGED IN -> LOGIN FORM IN NAVBAR -------------------------------------------------------------------------------
+                                }
+                        ?>
+
                      </div>
                  </nav>
         <?php

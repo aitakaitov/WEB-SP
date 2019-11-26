@@ -11,8 +11,7 @@ $templateData['pages'] = array
 
 $styleSheets = array
 (
-        "registerpage_styles.css",
-        "registerpage_styles.css"
+        "Views/Styles/registerpage_styles.css"
 );
 
 // Include header and footer
@@ -22,28 +21,35 @@ $stdTemplates = new StandardTemplates();
 $stdTemplates -> getHTMLHeader($templateData['title'], $templateData['pages'], $templateData['currentPageKey'], $styleSheets);
 
 ?>
-<div class="form-wrapper">
-    <div class="text-center">
-        <h2>Register</h2>
+    <div class="container h-100">
+        <div class="h-100 justify-content-center align-items-center">
+        <h2 class="text-center">Register</h2>
         <form action="Actions/RegisterAction.php" method="post">
             <div class="form-group text-left">
-                <label for="input_nick">Email address <span class="red-text">*</span></label>
-                <input type="text" name="nickname" class="form-control" id="input_nick" placeholder="Nickname">
+                <label for="input_name">Name <span class="red-text">*</span></label>
+                <input type="text" name="name" class="form-control" id="input_name" placeholder="Name" required>
+            </div>
+            <div class="form-group text-left">
+                <label for="input_surname">Surname <span class="red-text">*</span></label>
+                <input type="text" name="surname" class="form-control" id="input_surname" placeholder="Surname" required>
+            </div>
+            <div class="form-group text-left">
+                <label for="input_nick">Nickname <span class="red-text">*</span></label>
+                <input type="text" name="nickname" class="form-control" id="input_nick" placeholder="Nickname" required>
             </div>
             <div class="form-group text-left">
                 <label for="input_email">Email address <span class="red-text">*</span></label>
-                <input type="email" name="email" class="form-control" id="input_email" aria-describedby="emailHelp" placeholder="Enter email address">
-                <small id="emailHelp" class="form-text text-muted">Enter a valid email address</small>
+                <input type="email" name="email" class="form-control" id="input_email" placeholder="Enter email address" required>
             </div>
             <div class="form-group text-left">
-                <label for="input_password">Email address <span class="red-text">*</span></label>
-                <input type="password" name="password" class="form-control" id="input_password" aria-describedby="passwordHelp" placeholder="Password">
-                <small id="passwordHelp" class="form-text text-muted">Stronger password if possible</small>
+                <label for="input_password">Password <span class="red-text">*</span></label>
+                <input type="password" name="password" class="form-control" id="input_password" placeholder="Password" required>
             </div>
+            <small class="form-text text-muted">Fields with * are required</small>
             <button type="submit" class="btn btn-primary">Register</button>
         </form>
+        </div>
     </div>
-</div>
 
 
 

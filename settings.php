@@ -25,6 +25,8 @@ const CONTROLLERS_DIR = "Controllers";
 const MODELS_DIR = "Models";
 // Views dir
 const VIEWS_DIR = "Views";
+// Session dir
+const SESS_DIR = "Session";
 
 
 // Web pages info
