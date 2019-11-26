@@ -1,0 +1,13 @@
+body {
+    padding-top: 80px;          /* So that the navbar doesnt cover content */
+}
+@media (max-width: 979px) {
+    body {
+        padding-top: 80px;
+    }
+}
+@media (max-width: 262px) {
+    body {
+        padding-top: 110px;
+    }
+}
