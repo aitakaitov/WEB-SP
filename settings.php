@@ -13,11 +13,11 @@ define("DB_PASS", "");
 
 
 // Table with articles
-define("TABLE_ARTICLES", "ARTICLES");
+define("TABLE_ARTICLES", "articles");
 // Table with users
-define("TABLE_USERS", "USERS");
+define("TABLE_USERS", "users");
 // Table with article reviews
-define("TABLE_REVIEWS", "REVIEWS");
+define("TABLE_REVIEWS", "reviews");
 
 // Controllers dir
 const CONTROLLERS_DIR = "Controllers";
@@ -59,13 +59,13 @@ const WEB_PAGES = array
         "access" => "all"
     ),
 
-    "login" => array
+    "article" => array
     (
-        "file_name" => "LoginPageController.php",
-        "class_name" => "LoginPageController",
-        "title" => "Log in",
-        "key" => "login",
-        "access" => "unlogged"
+        "file_name" => "ArticlePageController.php",
+        "class_name" => "ArticlePageController",
+        "title" => "placeholder",        // TODO
+        "key" => "article",
+        "access" => "all"
     )
 );
 
