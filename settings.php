@@ -38,7 +38,7 @@ const WEB_PAGES = array
         "class_name" => "MainPageController",
         "title" => "Main page",
         "key" => "mainpage",    // Key for referencing the page in <a href...>
-        "access" => "all"       // Everyone can access the page     all - everyone, logged - logged in users, admin - admin users
+        "access" => "all"       // Everyone can access the page     all - everyone, logged - logged in users, unlogged - unlogged users, admin - admin users
     ),
 
     "register" => array
@@ -63,9 +63,9 @@ const WEB_PAGES = array
     (
         "file_name" => "ArticlePageController.php",
         "class_name" => "ArticlePageController",
-        "title" => "placeholder",        // TODO
+        "title" => "placeholder",   // Is resolved in controller
         "key" => "article",
-        "access" => "all"
+        "access" => "except"        // Because it will not be shown in navbar, but can be accessed by anyone
     )
 );
 
