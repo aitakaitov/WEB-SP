@@ -24,8 +24,9 @@ class StandardTemplates
      * @param pages should contain all pages that the user should be able to see, so that admin controls wont be shown to non-admin users etc.
      * @param currentPageKey pageKey of page being displayed
      * @param styleSheets CSS to be linked apart from Bootstrap
+     * @param scripts JS files to be linked
      */
-    public function getHTMLHeader($title, $pages, $currentPageKey, $styleSheets)
+    public function getHTMLHeader($title, $pages, $currentPageKey, $styleSheets, $scripts)
     {
         ?>
 
@@ -40,13 +41,27 @@ class StandardTemplates
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
                 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
+                <?php   // If we need any JS
+                if (!is_null($scripts))
+                {
+                    foreach ($scripts as $s)
+                    {
+                        echo "<script src='".$s."'></script>";
+                    }
+                }
+                ?>
+
+
                 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
                 <?php   // --------------------------------------------------------------------------------- DYNAMICALLY INCLUDE STYLESHEETS ----------------------------------------------------------------------
 
+                if (!is_null($styleSheets)) // If stylesheets are necessary
+                {
                     foreach ($styleSheets as $sheet)    // Link styles
                     {
-                        echo "<link rel='stylesheet' href=".$sheet.">";
+                        echo "<link rel='stylesheet' href=" . $sheet . ">";
                     }
+                }
                 ?>
                 <link rel="stylesheet" href="Views/Styles/universal_styles.css">    <!-- CSS for navbar padding -->
                 <title><?php echo $title;?></title>
@@ -67,11 +82,7 @@ class StandardTemplates
                                  // Print out all pages that we should print out (different for admins, logged, visitors)
                                     foreach ($pages as $p)
                                     {
-                                        if ($p == "register" && $this -> login ->isUserLogged())  //------------------------------------------ LOGGED IN -> NO REGISTER PAGE ----------------------------
-                                        {
-                                            continue;       // Skip register page if user is logged in
-                                        }
-                                        else if ($p == $currentPageKey)
+                                        if ($p == $currentPageKey)
                                         {
                                             echo "<li class='nav-item'><a class='nav-link' href='index.php?page=".$p."'><strong>".WEB_PAGES[$p]['title']."</strong></a></li>";
 
@@ -82,40 +93,32 @@ class StandardTemplates
                                             }
                                     }
                                  ?>
-                             </ul>
+
                              <?php
                                     // -------------------------------------------------------- USER NOT LOGGED IN -> LOGIN FORM IN NAVBAR -------------------------------------------------------------------------------
 
-                                if (!$this -> login ->isUserLogged())   // If user is not logged in -> include login form in navbar
+                                if (!$this -> login -> isUserLogged())   // If user is not logged in -> include login form in navbar
                                 {
                              ?>
-                             <ul class="navbar-nav nav mr pull-right">
+                             </ul>
+                             <ul class="navbar-nav nav navbar-right">
                                  <li class="dropdown">
-                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Login <span
-                                                 class="sparet"> </span></a>
+                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Login <span class="sparet"> </span></a>
                                      <ul id="login-dp" class="dropdown-menu">
                                          <li>
                                              <div class="row h-100 justify-content-center align-items-center">
                                                  <div class="col-md-12">
-                                                     <form class="form" role="form" method="post"
-                                                           action="Actions/LoginAction.php" id="login-nav">
+                                                     <form class="form" role="form" method="post" action="Actions/LoginAction.php" id="login-nav">
                                                          <div class="form-group">
-                                                             <label class="sr-only" for="input_nickname">Email
-                                                                 address</label>
-                                                             <input type="text" name="username" class="form-control"
-                                                                    id="input_nickname" placeholder="Email address"
-                                                                    required>
+                                                             <label class="sr-only" for="input_nickname">Nickname</label>
+                                                             <input type="text" name="username" class="form-control" id="input_nickname" placeholder="Nickname" required>
                                                          </div>
                                                          <div class="form-group">
-                                                             <label class="sr-only"
-                                                                    for="input_password">Password</label>
-                                                             <input type="password" name="password" class="form-control"
-                                                                    id="input_password" placeholder="Password" required>
+                                                             <label class="sr-only" for="input_password">Password</label>
+                                                             <input type="password" name="password" class="form-control" id="input_password" placeholder="Password" required>
                                                          </div>
                                                          <div class="form-group">
-                                                             <button class="btn btn-primary btn-block" type="submit">
-                                                                 Sign in
-                                                             </button>
+                                                             <button class="btn btn-primary btn-block" type="submit">Sign in</button>
                                                          </div>
                                                      </form>
                                                  </div>
@@ -126,7 +129,18 @@ class StandardTemplates
                              </ul>
                          </div>
                         <?php           // -------------------------------------------------------- END OF => USER NOT LOGGED IN -> LOGIN FORM IN NAVBAR -------------------------------------------------------------------------------
-                                }
+                                } else  // -------------------------------------------------------- USER LOGGED IN -> LOGOUT BUTTON IN NAVBAR ----------------------------------------------------------------------//
+                                    {
+                                        ?>
+                             <li class="nav-item navbar-right">
+                                 <a class="nav-link" href="Actions/LogoutAction.php">Logout</a>
+                             </li>
+                             <li class="nav-item">
+                                 <span class="navbar-text font-weight-bold ml-5"><?php echo $_SESSION['name']." (".$_SESSION['privileges'].")"; ?></span>
+                             </li>
+                         </ul>
+                                        <?php
+                                    }
                         ?>
 
                      </div>

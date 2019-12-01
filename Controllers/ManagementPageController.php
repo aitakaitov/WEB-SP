@@ -8,11 +8,10 @@ require_once("IController.php");
 require_once("FunctionsMenuPages.php");
 
 /**
- * Class MainPageController
- * Controller for main page
- * Loads data for template to database
+ * Class ManagementPageController
+ * Loads users from database and calls view
  */
-class MainPageController implements IController
+class ManagementPageController implements IController
 {
     // Database
     private $db;
@@ -42,8 +41,7 @@ class MainPageController implements IController
 
         $templateData = [];
 
-        $templateData['articles'] = $this -> db ->getAllArticles(1);
-        $templateData['currentPageKey'] = "mainpage";
+        $templateData['currentPageKey'] = "management";
         $templateData['title'] = $title;
 
         $pages = array();
@@ -64,12 +62,15 @@ class MainPageController implements IController
         }
 
         $templateData['pages'] = $pages;
+        $templateData['users'] = $this -> db -> getAllUsers();                                                                      // ----------------------- GET THE USERS --------------------------------
+
+        $templateData['articles'] = $this -> db -> getAllArticles(0);                                                      // ----------------------- GET UNAPPROVED ARTICLES ---------------
 
         // Start the output buffer
         ob_start();
 
         // Get the template HTML
-        require_once(VIEWS_DIR."/MainPageView.php");
+        require_once(VIEWS_DIR."/ManagementPageView.php");
 
         // Get output buffer contents and clean buffer
         $pageContents = ob_get_clean();

@@ -23,12 +23,13 @@ class DBModel
     }
 
     /**
-     * Returns all approved articles
+     * Returns all approved or not approved articles
      * @return array Articles
+     * @param int approved 0 = not 1 = yes
      */
-    public function getAllApprovedArticles():array
+    public function getAllArticles($approved):array
     {
-        $query = "SELECT * FROM ".TABLE_ARTICLES." WHERE (approved = 1) ORDER BY id_article DESC";
+        $query = "SELECT * FROM ".TABLE_ARTICLES." WHERE (approved = ".$approved.") ORDER BY id_article DESC";
         return $this -> pdo -> query($query) -> fetchAll();
     }
 
@@ -40,16 +41,18 @@ class DBModel
     public function addUser($userInfo)
     {
         // Check if same username exists
-        $query = "SELECT TOP 1 nick FROM ".TABLE_USERS." WHERE nick = ".$userInfo['nickname'];
+        $query = "SELECT * FROM ".TABLE_USERS." WHERE (nick = \"".$userInfo['nickname']."\")";
+
         $result = $this -> pdo -> query($query) -> fetchAll();
 
-        if ($result -> rowCount() == 1)
+        if (count($result) >= 1)
         {
             return false;
         }
 
         // If empty, add user
-        $query = "INSERT INTO ".TABLE_USERS." VALUES (".$userInfo['nickname'].", ".$userInfo['name'].", ".$userInfo['surname'].", ".$userInfo['email'].", ".$userInfo['password'].", "."0}";
+        $query = "INSERT INTO ".TABLE_USERS." VALUES (NULL, \"".$userInfo['nickname']."\", \"".$userInfo['name']."\", \"".$userInfo['surname']."\", \"".$userInfo['email']."\", \"".$userInfo['password']."\", "."\"user\", 1)";
+        echo $query;
         $this -> pdo -> query($query);
         return true;
     }
@@ -61,10 +64,83 @@ class DBModel
      */
     public function getUserPrivileges($userName)
     {
-        $query = "SELECT * FROM ".TABLE_USERS." WHERE nick = ".$userName;
+        $query = "SELECT * FROM ".TABLE_USERS." WHERE nick = \"".$userName."\"";
         $result = $this -> pdo -> query($query) -> fetchAll();
+        $result = $result[0];
 
         return $result['privilege'];
+    }
+
+    /**
+     * Fetches all users from database
+     * @return array users
+     */
+    public function getAllUsers()
+    {
+        $query = "SELECT * FROM ".TABLE_USERS." WHERE privilege != \"admin\" AND active = 1 ORDER BY nick ASC";
+        $result = $this -> pdo -> query($query) -> fetchAll();
+
+        return $result;
+    }
+
+    /**
+     * Deletes user
+     * @param $userID
+     */
+    public function deleteUser($userID)
+    {
+        $query = "UPDATE ".TABLE_USERS." SET active = 0 WHERE id_user = ".$userID;
+        echo $query;
+        $this -> pdo -> query($query);
+    }
+
+    /**
+     * Returns article with specific ID
+     * If no such article exists, returns NULL
+     * @param $articleID id of article
+     * @return array or null
+     */
+    public function getArticleByID($articleID)
+    {
+        $query = "SELECT * FROM ".TABLE_ARTICLES." WHERE (id_article = ".$articleID.")";
+        $result = $this -> pdo -> query($query) -> fetchAll();
+
+        if (count($result) == 0)
+        {
+            echo "NULL";
+            return null;
+        }
+
+        return $result;
+    }
+
+    /**
+     * Returns all reviews for an article
+     * @param $articleID id of article
+     * @return array reviews
+     */
+    public function getArticleReviews($articleID)
+    {
+        $result = $this -> getArticleByID($articleID);
+        $result = $result[0];
+
+        $query = "SELECT * FROM reviews WHERE ((id_review = ".$result['review1'].") or (id_review = ".$result['review2'].") or (id_review = ".$result['review3']."))";
+        $result = $this -> pdo -> query($query) -> fetchAll();
+
+        return $result;
+    }
+
+    /**
+     * Returns user data
+     * @param $userID user id
+     * @return array
+     */
+    public function getUserByID($userID)
+    {
+        $query = "SELECT * FROM ".TABLE_USERS." WHERE (id_user = ".$userID.")";
+        $result = $this -> pdo -> query($query) -> fetchAll();
+
+        return $result;
     }
 
     /**
@@ -75,16 +151,29 @@ class DBModel
      */
     public function userLoginCheck($nick, $password)
     {
-        $query = "SELECT * FROM ".TABLE_USERS." WHERE nick = ".$nick." AND password = ".$password;
+        $query = "SELECT * FROM ".TABLE_USERS." WHERE nick = \"".$nick."\" AND password = \"".$password."\" AND active = 1";
         $result = $this -> pdo -> query($query) -> fetchAll();
 
-        if ($result -> rowCount() == 0) // If no such user exists
+        if (count($result) == 0) // If no such user exists
         {
             return false;
         } else
             {
                 return true;
             }
+    }
+
+    /**
+     * Sets all three reviewers for an article
+     * @param $reviewer1
+     * @param $reviewer2
+     * @param $reviewer3
+     * @param $articleID
+     */
+    public function setArticleReviewers($reviewer1, $reviewer2, $reviewer3, $articleID)
+    {
+        $query = "UPDATE ".TABLE_ARTICLES." SET reviewer1 = ".$reviewer1.", reviewer2 = ".$reviewer2.", reviewer3 = ".$reviewer3." WHERE id_article = ".$articleID;
+        $this -> pdo -> query($query);
     }
 
 }

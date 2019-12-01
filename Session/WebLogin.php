@@ -13,7 +13,10 @@ class WebLogin
     private $name = "name";
 
     // Date key
-    private $date = "date";
+    private $date = "time";
+
+    // Privileges key
+    private $privileges = "privileges";
 
     // Database access
     private $db;
@@ -24,9 +27,9 @@ class WebLogin
      */
     public function __construct()
     {
-        include_once(SESS_DIR."/WebSession.php");
+        include_once(realpath($_SERVER['DOCUMENT_ROOT'])."/web/".SESS_DIR."/WebSession.php");
         $this -> session = new WebSession();
-        include_once(MODELS_DIR."/DBModel.php");
+        include_once(realpath($_SERVER['DOCUMENT_ROOT'])."/web/".MODELS_DIR."/DBModel.php");
         $this -> db = new DBModel();
     }
 
@@ -40,17 +43,28 @@ class WebLogin
     }
 
     /**
+     * Returns user privileges
+     * @return mixed|null
+     */
+    public function getUserPrivileges()
+    {
+        return $this -> session -> getSession($this -> privileges);
+    }
+
+    /**
      * Login user
-     * @param $nick nickname
-     * @param $password user password
+     * Add session with user name, login time and privileges
+     * @param $nick string nickname
+     * @param $password string user password
      * @return bool login successful
      */
     public function login($nick, $password)
     {
         if ($this -> db ->userLoginCheck($nick, $password))
         {
-            $this -> session -> addSession($this -> $name, $nick);
-            $this -> session -> addSession($this -> $date, date("d. M. Y., G:m:s"));
+            $this -> session -> addSession($this -> name, $nick);
+            $this -> session -> addSession($this -> date, time());
+            $this -> session -> addSession($this -> privileges, $this -> db -> getUserPrivileges($nick));
 
             return true;
         } else
@@ -64,8 +78,8 @@ class WebLogin
      */
     public function logout()
     {
-        $this -> session -> removeSession($this -> date);
-        $this -> session -> removeSession($this -> date);
+        session_unset();
+        session_destroy();
     }
 
     /**
