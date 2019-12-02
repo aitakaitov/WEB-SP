@@ -144,6 +144,20 @@ class DBModel
     }
 
     /**
+     * Returns user info for a nickname
+     * Users have unique nicknames
+     * @param $nick
+     * @return array
+     */
+    public function getUserByNick($nick)
+    {
+        $query = "SELECT * FROM ".TABLE_USERS." WHERE (nick = \"".$nick."\")";
+        $result = $this -> pdo -> query($query) -> fetchAll();
+
+        return $result;
+    }
+
+    /**
      * Check if user exists in database
      * @param $nick nickname
      * @param $password password
@@ -176,9 +190,19 @@ class DBModel
         $this -> pdo -> query($query);
     }
 
-    public function addArticle($article_text, $user, $images, $title)
+    /**
+     * Adds article into the database. Article is not approved by default
+     * @param $article_text
+     * @param $user
+     * @param $images
+     * @param $title
+     * @param headerImage
+     */
+    public function addArticle($article_text, $user, $images, $title, $headerImage)
     {
-
+        $query = "INSERT INTO ".TABLE_ARTICLES." VALUES (NULL, 0, \"".$article_text."\", \"".$title."\", \"".$images."\", \"".$user."\", NULL, NULL, NULL, \"".$headerImage."\", NULL, NULL, NULL)";
+        $this -> pdo -> query($query);
+        echo $query;
     }
 
 }

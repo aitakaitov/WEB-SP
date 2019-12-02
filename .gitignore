@@ -1,6 +1,8 @@
 *.xml
 *.idea
 *.iml
+*.jpg
+*.jpeg
 /summernote/font/summernote.eot
 /summernote/font/summernote.ttf
 /summernote/font/summernote.woff

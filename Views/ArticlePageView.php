@@ -44,6 +44,10 @@ if (is_null($article))
                 if (!is_null($images))  // If there are any
                 {
                     foreach ($images as $i) {
+                        if ($i == "")
+                        {
+                            continue;
+                        }
                         ?>
                         <a href="<?php echo $i; ?>">
                             <img src="<?php echo $i; ?>" class="img-fluid p-3" alt="Image"/>

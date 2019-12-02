@@ -20,10 +20,16 @@ $stdTemplates -> getHTMLHeader($templateData['title'], $templateData['pages'], $
 
 <div class="container h-75">
     <h3 class="text-center p-3">New Article</h3>
-    <form method="POST" id="articleform" action="Actions/SubmitArticleAction.php">
+    <form method="POST" id="articleform" action="Actions/SubmitArticleAction.php" enctype="multipart/form-data">
         <div class="form-group">
-            <textarea id="summernote" form="articleform" name="article_text">
-                Type here...
+            <div class="w-50">
+                <label for="title">Title:</label>
+                <input type="text" name="title" maxlength="49" id="title" class="form-control" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <textarea id="summernote" form="articleform" name="article_text" required>
+                Text here...
             </textarea>
         </div>
         <div class="d-flex flex-column">
@@ -32,6 +38,7 @@ $stdTemplates -> getHTMLHeader($templateData['title'], $templateData['pages'], $
             </div>
             <div class="mb-2">
                 <small class="text-muted">Upload a maximum of 5 images. Rest of the images will be discarded. The first image will be used as article header. Allowed extensions are JPG, JPEG and PNG. Invalid files will be skipped.</small>
+                <br><small class="text-muted">The article cannot be edited after submission, so please double check everything.</small>
             </div>
             <div class="mb-2">
                 <button class="btn btn-info" type="submit" form="articleform">Submit for review</button>
