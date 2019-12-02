@@ -176,4 +176,9 @@ class DBModel
         $this -> pdo -> query($query);
     }
 
+    public function addArticle($article_text, $user, $images, $title)
+    {
+
+    }
+
 }

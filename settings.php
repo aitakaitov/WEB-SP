@@ -66,6 +66,15 @@ const WEB_PAGES = array
         "title" => "Management",
         "key" => "management",
         "access" => "admin"
+    ),
+
+    "newarticle" => array
+    (
+        "file_name" => "NewArticlePageController.php",
+        "class_name" => "NewArticlePageController",
+        "title" => "New Article",
+        "key" => "newarticle",
+        "access" => "logged"
     )
 );
 
