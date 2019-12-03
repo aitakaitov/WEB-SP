@@ -16,6 +16,17 @@ $scripts = array
 
 $stdTemplates -> getHTMLHeader($templateData['title'], $templateData['pages'], $templateData['currentPageKey'], $styleSheets, $scripts);
 
+if (isset($_GET['success']) && !empty($_GET['success']) && $_GET['success'] == "true")
+{
+    ?>
+    <div class="container h-75">
+        <h3 class="text-center">Article has been submitted for review.</h3>
+        <p class="text-center pb-3">The article will have reviewers assigned and when the process is done, it will be visible on the main page.</p>
+    </div>
+    <?php
+}
+else
+    {
 ?>
 
 <div class="container h-75">
@@ -74,5 +85,6 @@ $stdTemplates -> getHTMLHeader($templateData['title'], $templateData['pages'], $
 
 
 <?php
+    }
 $stdTemplates -> getHTMLFooter();
 ?>

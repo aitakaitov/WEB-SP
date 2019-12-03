@@ -9,16 +9,17 @@ $reviewer2_id = $_POST['reviewer2'];
 $reviewer3_id = $_POST['reviewer3'];
 $article_id = $_POST['id_article'];
 
+var_dump($_POST);
 // If they were left empty for some reason
-if ($reviewer1_id == "")
+if ($reviewer1_id == "Select user")
 {
     $reviewer1_id = "NULL";
 }
-if ($reviewer2_id == "")
+if ($reviewer2_id == "Select user")
 {
     $reviewer2_id = "NULL";
 }
-if ($reviewer3_id == "")
+if ($reviewer3_id == "Select user")
 {
     $reviewer3_id = "NULL";
 }
@@ -30,7 +31,7 @@ if ($reviewer1_id == $reviewer3_id)
 }
 if ($reviewer1_id == $reviewer2_id)
 {
-    $reviewer3_id = "NULL";
+    $reviewer2_id = "NULL";
 }
 if ($reviewer2_id == $reviewer3_id)
 {
@@ -45,7 +46,7 @@ $db -> setArticleReviewers($reviewer1_id, $reviewer2_id, $reviewer3_id, $article
 <!doctype html>
 <html>
     <head>
-       <meta http-equiv="refresh" content="0;url=../index.php?page=management">
+      <!-- <meta http-equiv="refresh" content="0;url=../index.php?page=management">-->
     </head>
     <body></body>
 </html>

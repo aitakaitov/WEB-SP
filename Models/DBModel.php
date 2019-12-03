@@ -178,6 +178,36 @@ class DBModel
     }
 
     /**
+     * Returns all articles that have not been approved yet and one of the reviewers is the user with $userID and none of the reviews are from the user
+     * @param $userID user id
+     * @return array articles to review
+     */
+    public function getArticlesToReview($userID)
+    {
+        $query = "SELECT * FROM ".TABLE_ARTICLES." WHERE (approved = 0) AND (reviewer1 = ".$userID." OR reviewer2 = ".$userID." OR reviewer3 = ".$userID.")";
+        $result = $this -> pdo -> query($query) -> fetchAll();
+
+        $invalid = array();
+        foreach ($result as $article)
+        {
+            if ($article['review1'] != null && $article['reviewer1'] == $userID)
+            {
+                array_push($invalid, $article);
+            }
+            if ($article['review2'] != null && $article['reviewer2'] == $userID)
+            {
+                array_push($invalid, $article);
+            }
+            if ($article['review3'] != null && $article['reviewer3'] == $userID)
+            {
+                array_push($invalid, $article);
+            }
+        }
+
+        return array_diff($result, $invalid);
+    }
+
+    /**
      * Sets all three reviewers for an article
      * @param $reviewer1
      * @param $reviewer2
@@ -202,7 +232,6 @@ class DBModel
     {
         $query = "INSERT INTO ".TABLE_ARTICLES." VALUES (NULL, 0, \"".$article_text."\", \"".$title."\", \"".$images."\", \"".$user."\", NULL, NULL, NULL, \"".$headerImage."\", NULL, NULL, NULL)";
         $this -> pdo -> query($query);
-        echo $query;
     }
 
 }

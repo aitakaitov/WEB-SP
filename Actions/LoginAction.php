@@ -12,7 +12,7 @@ $login -> login($_POST['username'], $_POST['password']);
 <!doctype html>
 <html>
 <head>
-    <meta http-equiv="refresh" content="0;url=../index.php?page=mainpage">
+   <meta http-equiv="refresh" content="0;url=../index.php?page=mainpage">
 </head>
 <body></body>
 </html>

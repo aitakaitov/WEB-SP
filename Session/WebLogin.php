@@ -18,6 +18,9 @@ class WebLogin
     // Privileges key
     private $privileges = "privileges";
 
+    // ID key
+    private $id = "id";
+
     // Database access
     private $db;
 
@@ -53,7 +56,7 @@ class WebLogin
 
     /**
      * Login user
-     * Add session with user name, login time and privileges
+     * Add session with user name, login time and privileges and ID
      * @param $nick string nickname
      * @param $password string user password
      * @return bool login successful
@@ -64,7 +67,12 @@ class WebLogin
         {
             $this -> session -> addSession($this -> name, $nick);
             $this -> session -> addSession($this -> date, time());
-            $this -> session -> addSession($this -> privileges, $this -> db -> getUserPrivileges($nick));
+
+            $userInfo = $this -> db -> getUserByNick($nick);
+            $userInfo = $userInfo[0];
+
+            $this -> session -> addSession($this -> privileges, $userInfo['privilege']);
+            $this -> session -> addSession($this -> id, $userInfo['id_user']);
 
             return true;
         } else
@@ -91,6 +99,7 @@ class WebLogin
         $info = [];
         $info['nick'] = $this -> session -> getSession($this -> name);
         $info['login_date'] = $this -> session -> getSession($this -> date);
+        $info['id'] = $this -> session -> getSession($this -> id);
 
         return $info;
     }

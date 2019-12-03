@@ -57,3 +57,12 @@ for ($i = 0; $i < $count; $i++)              // Take max five images
 $user = $db -> getUserByNick($login ->getUserInfo()['nick']);       // Get author ID
 $db -> addArticle($articleText, $user[0]['id_user'], $imagesString, $title, $headerImage);
 
+?>
+
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="refresh" content="0;url=../index.php?page=newarticle&success=true">
+    </head>
+</html>
+
