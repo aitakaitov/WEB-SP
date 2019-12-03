@@ -89,8 +89,6 @@ if (is_null($article))
             ?>
 
         </div>
-
-
     </div>
     <?php
 }

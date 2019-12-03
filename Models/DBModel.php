@@ -107,7 +107,6 @@ class DBModel
 
         if (count($result) == 0)
         {
-            echo "NULL";
             return null;
         }
 
@@ -231,6 +230,57 @@ class DBModel
     public function addArticle($article_text, $user, $images, $title, $headerImage)
     {
         $query = "INSERT INTO ".TABLE_ARTICLES." VALUES (NULL, 0, \"".$article_text."\", \"".$title."\", \"".$images."\", \"".$user."\", NULL, NULL, NULL, \"".$headerImage."\", NULL, NULL, NULL)";
+        $this -> pdo -> query($query);
+    }
+
+    /**
+     * Returns -1 of not and 1/2/3 depending on which reviewer user is
+     * @param $userID int user id
+     * @param $articleID int article id
+     * @return int see function description
+     */
+    public function canUserReviewArticle($userID, $articleID)
+    {
+        $query = "SELECT * FROM ".TABLE_ARTICLES." WHERE id_article = ".$articleID;
+        $result = $this -> pdo -> query($query) -> fetchAll();
+
+        $result = $result[0];
+
+        if ($result['reviewer1'] == $userID)
+        {
+            return 1;
+        }
+        else if ($result['reviewer2'] == $userID)
+        {
+            return 2;
+        }
+        else if ($result['reviewer3'] == $userID)
+        {
+            return 3;
+        }
+        else
+            {
+                return -1;
+            }
+    }
+
+    /**
+     * Handles creating a new review and adding it to an article
+     * @param $userID int id user
+     * @param $reviewText string review text
+     * @param $articleID int id article
+     * @param $reviewerNumber int 1/2/3 - what review this one should be
+     * @param $score int article score
+     */
+    public function addReviewToArticle($userID, $reviewText, $articleID, $reviewerNumber, $score)
+    {
+        $query = "INSERT INTO ".TABLE_REVIEWS." VALUES (NULL, \"".$userID."\", ".$score.", \"".$reviewText."\")";
+        $this -> pdo -> query($query);
+
+        $query = "SELECT id_review FROM ".TABLE_REVIEWS." ORDER BY id_review DESC LIMIT 1";     // Workaround solution, had problems adding identity to the table. SCOPE_INDENTITY() would be the proper solution
+        $reviewID = $this -> pdo -> query($query) -> fetchAll()[0]
+
+        $query = "UPDATE ".TABLE_ARTICLES." SET review".$reviewerNumber." = ".$reviewID." WHERE id_article = ".$articleID;
         $this -> pdo -> query($query);
     }
 

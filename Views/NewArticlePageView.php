@@ -77,7 +77,48 @@ else
                     ['view', ['fullscreen', 'codeview', 'help']],
                 ],
                 fontNames: ['Helvetica', 'Arial'],
-                disableDragAndDrop: true
+                disableDragAndDrop: true,
+                callbacks:                                  // Function to stop characters at a given number
+                    {
+                        callbacks:                                  // Function to stop characters at a given number from https://42coders.com/characters-count-in-summernote-wysiwyg stripped of character counter //
+                            {                                       // Which did not work unfortunately
+                                onkeydown:function(e)
+                                {
+                                    var charLimit = 2500;
+                                    var t = e.currentTarget.innerText;
+                                    if (t.trim().length >= charLimit)
+                                    {
+                                        if (e.key !== 8 && !(e.key >= 37 && e.key <= 40) && e.key !== 46 && !(e.key === 88 && e.ctrlKey) && !(e.key === 67 && e.ctrlKey))
+                                        {
+                                            e.preventDefault();
+                                        }
+                                    }
+                                },
+                                onPaste: function(e)
+                                {
+                                    var charLimit = 2500;
+                                    var t = e.currentTarget.innerText;
+                                    var bufferText = ((e.originalEvent || e).clipboardData || window.clipboardData).getData('Text');
+                                    e.preventDefault();
+                                    var maxPaste = bufferText.length;
+                                    if (t.length + bufferText.length > charLimit)
+                                    {
+                                        maxPaste = charLimit - t.length;
+                                    }
+                                    if (maxPaste > 0)
+                                    {
+                                        document.execCommand('insertText', false, bufferText.substring(0, maxPaste));
+                                    }
+                                    $('#summernote').text(charLimit - t.length);
+                                },
+                                onKeyup: function(e)
+                                {
+                                    var charLimit = 2500;
+                                    var t = e.currentTarget.innerText;
+                                    $('#summernote').text(charLimit - t.trim().length);
+                                }
+                            }
+                    }
             });
         });
     </script>
