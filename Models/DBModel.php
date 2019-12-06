@@ -29,8 +29,9 @@ class DBModel
      */
     public function getAllArticles($approved):array
     {
-        $query = "SELECT * FROM ".TABLE_ARTICLES." WHERE (approved = ".$approved.") ORDER BY id_article DESC";
-        return $this -> pdo -> query($query) -> fetchAll();
+        $stmt = $this -> pdo -> prepare("SELECT * FROM ".TABLE_ARTICLES." WHERE (approved = ?) ORDER BY id_article DESC");
+        $stmt -> execute([$approved]);
+        return $stmt -> fetchAll();
     }
 
     /**
@@ -41,9 +42,10 @@ class DBModel
     public function addUser($userInfo)
     {
         // Check if same username exists
-        $query = "SELECT * FROM ".TABLE_USERS." WHERE (nick = \"".$userInfo['nickname']."\")";
+        $stmt = $this -> pdo -> prepare("SELECT * FROM ".TABLE_USERS." WHERE (nick = ?");
+        $stmt -> execute([$userInfo['nickname']]);
 
-        $result = $this -> pdo -> query($query) -> fetchAll();
+        $result = $stmt -> fetchAll();
 
         if (count($result) >= 1)
         {
@@ -51,9 +53,16 @@ class DBModel
         }
 
         // If empty, add user
-        $query = "INSERT INTO ".TABLE_USERS." VALUES (NULL, \"".$userInfo['nickname']."\", \"".$userInfo['name']."\", \"".$userInfo['surname']."\", \"".$userInfo['email']."\", \"".$userInfo['password']."\", "."\"user\", 1)";
-        echo $query;
-        $this -> pdo -> query($query);
+        $stmt = $this -> pdo -> prepare("INSERT INTO ".TABLE_USERS." VALUES (:null, :nick, :name, :surname, :email, :pass, :privilege, :active)");
+        $stmt -> bindValue(":null", NULL);
+        $stmt -> bindValue(":nick", $userInfo['nickname']);
+        $stmt -> bindValue(":name", $userInfo['name']);
+        $stmt -> bindValue(":surname", $userInfo['surname']);
+        $stmt -> bindValue(":email", $userInfo['email']);
+        $stmt -> bindValue(":pass", $userInfo['password']);
+        $stmt -> bindValue(":privilege", "user");
+        $stmt -> bindValue(":active", 1);
+        $stmt -> execute();
         return true;
     }
 
@@ -64,8 +73,9 @@ class DBModel
      */
     public function getUserPrivileges($userName)
     {
-        $query = "SELECT * FROM ".TABLE_USERS." WHERE nick = \"".$userName."\"";
-        $result = $this -> pdo -> query($query) -> fetchAll();
+        $stmt = $this -> pdo -> prepare("SELECT * FROM ".TABLE_USERS." WHERE nick = ?");
+        $stmt -> execute([$userName]);
+        $result = $stmt -> fetchAll();
         $result = $result[0];
 
         return $result['privilege'];
@@ -77,8 +87,9 @@ class DBModel
      */
     public function getAllUsers()
     {
-        $query = "SELECT * FROM ".TABLE_USERS." WHERE privilege != \"admin\" AND active = 1 ORDER BY nick ASC";
-        $result = $this -> pdo -> query($query) -> fetchAll();
+        $stmt = $this -> pdo -> prepare("SELECT * FROM ".TABLE_USERS." WHERE privilege != ? AND active = ? ORDER BY nick ASC");
+        $stmt -> execute(["admin", 1]);
+        $result = $stmt -> fetchAll();
 
         return $result;
     }
@@ -89,21 +100,21 @@ class DBModel
      */
     public function deleteUser($userID)
     {
-        $query = "UPDATE ".TABLE_USERS." SET active = 0 WHERE id_user = ".$userID;
-        echo $query;
-        $this -> pdo -> query($query);
+        $stmt = $this -> pdo -> prepare("UPDATE ".TABLE_USERS." SET active = ? WHERE id_user = ?");
+        $stmt -> execute([0, $userID]);
     }
 
     /**
      * Returns article with specific ID
      * If no such article exists, returns NULL
-     * @param $articleID id of article
+     * @param $articleID int id of article
      * @return array or null
      */
     public function getArticleByID($articleID)
     {
-        $query = "SELECT * FROM ".TABLE_ARTICLES." WHERE (id_article = ".$articleID.")";
-        $result = $this -> pdo -> query($query) -> fetchAll();
+        $stmt = $this -> pdo -> prepare("SELECT * FROM ".TABLE_ARTICLES." WHERE id_article = ?");
+        $stmt -> execute([$articleID]);
+        $result = $stmt -> fetchAll();
 
         if (count($result) == 0)
         {
@@ -123,8 +134,9 @@ class DBModel
         $result = $this -> getArticleByID($articleID);
         $result = $result[0];
 
-        $query = "SELECT * FROM reviews WHERE ((id_review = ".$result['review1'].") or (id_review = ".$result['review2'].") or (id_review = ".$result['review3']."))";
-        $result = $this -> pdo -> query($query) -> fetchAll();
+        $stmt = $this -> pdo -> prepare("SELECT * FROM reviews WHERE ((id_review = ?) or (id_review = ?) or (id_review = ?))");
+        $stmt -> execute([$result['review1'], $result['review2'], $result['review2']]);
+        $result = $stmt -> fetchAll();
 
         return $result;
     }
@@ -136,8 +148,9 @@ class DBModel
      */
     public function getUserByID($userID)
     {
-        $query = "SELECT * FROM ".TABLE_USERS." WHERE (id_user = ".$userID.")";
-        $result = $this -> pdo -> query($query) -> fetchAll();
+        $stmt = $this -> pdo -> prepare("SELECT * FROM ".TABLE_USERS." WHERE (id_user = ?)");
+        $stmt -> execute([$userID]);
+        $result = $stmt -> fetchAll();
 
         return $result;
     }
@@ -150,8 +163,9 @@ class DBModel
      */
     public function getUserByNick($nick)
     {
-        $query = "SELECT * FROM ".TABLE_USERS." WHERE (nick = \"".$nick."\")";
-        $result = $this -> pdo -> query($query) -> fetchAll();
+        $stmt = $this -> pdo -> prepare("SELECT * FROM ".TABLE_USERS." WHERE nick = ?");
+        $stmt -> execute([$nick]);
+        $result = $stmt -> fetchAll();
 
         return $result;
     }
@@ -164,8 +178,9 @@ class DBModel
      */
     public function userLoginCheck($nick, $password)
     {
-        $query = "SELECT * FROM ".TABLE_USERS." WHERE nick = \"".$nick."\" AND password = \"".$password."\" AND active = 1";
-        $result = $this -> pdo -> query($query) -> fetchAll();
+        $stmt = $this -> pdo -> prepare("SELECT * FROM ".TABLE_USERS." WHERE nick = ? AND password = ? AND active = ?");
+        $stmt -> execute([$nick, $password, 1]);
+        $result = $stmt -> fetchAll();
 
         if (count($result) == 0) // If no such user exists
         {
@@ -183,8 +198,9 @@ class DBModel
      */
     public function getArticlesToReview($userID)
     {
-        $query = "SELECT * FROM ".TABLE_ARTICLES." WHERE (approved = 0) AND (reviewer1 = ".$userID." OR reviewer2 = ".$userID." OR reviewer3 = ".$userID.")";
-        $result = $this -> pdo -> query($query) -> fetchAll();
+        $stmt = $this -> pdo -> prepare("SELECT * FROM ".TABLE_ARTICLES." WHERE (approved = ?) AND (reviewer1 = ? OR reviewer2 = ? OR reviewer3 = ?)");
+        $stmt -> execute([0, $userID, $userID, $userID]);
+        $result = $stmt -> fetchAll();
 
         $invalid = array();
         foreach ($result as $article)
@@ -215,8 +231,8 @@ class DBModel
      */
     public function setArticleReviewers($reviewer1, $reviewer2, $reviewer3, $articleID)
     {
-        $query = "UPDATE ".TABLE_ARTICLES." SET reviewer1 = ".$reviewer1.", reviewer2 = ".$reviewer2.", reviewer3 = ".$reviewer3." WHERE id_article = ".$articleID;
-        $this -> pdo -> query($query);
+        $stmt = $this -> pdo -> prepare("UPDATE ".TABLE_ARTICLES." SET reviewer1 = ?, reviewer2 = ?, reviewer3 = ? WHERE id_article = ?");
+        $stmt -> execute([$reviewer1, $reviewer2, $reviewer3, $articleID]);
     }
 
     /**
@@ -229,6 +245,7 @@ class DBModel
      */
     public function addArticle($article_text, $user, $images, $title, $headerImage)
     {
+        //$stmt = $this -> pdo -> prepare("INSERT INTO ".TABLE_ARTICLES." VALUES (NULL, 0, \"".$article_text."\", \"".$title."\", \"".$images."\", \"".$user."\", NULL, NULL, NULL, \"".$headerImage."\", NULL, NULL, NULL)")
         $query = "INSERT INTO ".TABLE_ARTICLES." VALUES (NULL, 0, \"".$article_text."\", \"".$title."\", \"".$images."\", \"".$user."\", NULL, NULL, NULL, \"".$headerImage."\", NULL, NULL, NULL)";
         $this -> pdo -> query($query);
     }
@@ -278,7 +295,7 @@ class DBModel
         $this -> pdo -> query($query);
 
         $query = "SELECT id_review FROM ".TABLE_REVIEWS." ORDER BY id_review DESC LIMIT 1";     // Workaround solution, had problems adding identity to the table. SCOPE_INDENTITY() would be the proper solution
-        $reviewID = $this -> pdo -> query($query) -> fetchAll()[0]
+        $reviewID = $this -> pdo -> query($query) -> fetchAll()[0];
 
         $query = "UPDATE ".TABLE_ARTICLES." SET review".$reviewerNumber." = ".$reviewID." WHERE id_article = ".$articleID;
         $this -> pdo -> query($query);
