@@ -93,6 +93,15 @@ const WEB_PAGES = array
         "title" => "Article Review",
         "key" => "articlereview",
         "access" => "except"
+    ),
+
+    "myarticles" => array
+    (
+        "file_name" => "MyArticlesPageController.php",
+        "class_name" => "MyArticlesPageController",
+        "title" => "My Articles",
+        "key" => "myarticles",
+        "access" => "logged"
     )
 );
 

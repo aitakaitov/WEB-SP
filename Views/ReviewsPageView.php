@@ -51,6 +51,15 @@ $stdTemplates -> getHTMLHeader($templateData['title'], $templateData['pages'], $
             </tbody>
         </table>
     <hr style="margin-top: -16px"/>
+    <?php
+    if (count($templateData['articlesToReview']) == 0)
+    {
+        ?>
+        <h3 class="text-center pb-3">No articles to review</h3>
+
+        <?php
+    }
+    ?>
 
 </div>
 

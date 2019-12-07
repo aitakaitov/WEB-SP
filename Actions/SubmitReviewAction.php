@@ -6,17 +6,17 @@ require_once(realpath($_SERVER['DOCUMENT_ROOT'])."/web/".SESS_DIR."/WebLogin.php
 $db = new DBModel();
 $login = new WebLogin();
 
-if (isset($_POST['score']) && !empty($_POST['score']))  // Parse score
+if (isset($_POST['score']))  // Parse score
 {
     $score = $_POST['score'];
 
     $score = round($score);
 
-    if ($score > 10)
+    if ($score >= 10)
     {
         $score = 10;
     }
-    if ($score < 0)
+    if ($score <= 0)
     {
         $score = 0;
     }
@@ -43,6 +43,6 @@ $db -> addReviewToArticle($userID, $text, $articleID, $reviewerNumber, $score); 
 <!doctype html>
 <html>
 <head>
-    <meta http-equiv="refresh" content="0;url=../index.php?page=reviews">
+    <!-- <meta http-equiv="refresh" content="0;url=../index.php?page=reviews"> -->
 </head>
 </html>

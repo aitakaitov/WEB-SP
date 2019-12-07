@@ -135,7 +135,7 @@ class DBModel
         $result = $result[0];
 
         $stmt = $this -> pdo -> prepare("SELECT * FROM reviews WHERE ((id_review = ?) or (id_review = ?) or (id_review = ?))");
-        $stmt -> execute([$result['review1'], $result['review2'], $result['review2']]);
+        $stmt -> execute([$result['review1'], $result['review2'], $result['review3']]);
         $result = $stmt -> fetchAll();
 
         return $result;
@@ -202,24 +202,24 @@ class DBModel
         $stmt -> execute([0, $userID, $userID, $userID]);
         $result = $stmt -> fetchAll();
 
-        $invalid = array();
+        $valid = array();
         foreach ($result as $article)
         {
-            if ($article['review1'] != null && $article['reviewer1'] == $userID)
+            if ($article['review1'] == null && $article['reviewer1'] == $userID)
             {
-                array_push($invalid, $article);
+                array_push($valid, $article);
             }
-            if ($article['review2'] != null && $article['reviewer2'] == $userID)
+            if ($article['review2'] == null && $article['reviewer2'] == $userID)
             {
-                array_push($invalid, $article);
+                array_push($valid, $article);
             }
-            if ($article['review3'] != null && $article['reviewer3'] == $userID)
+            if ($article['review3'] == null && $article['reviewer3'] == $userID)
             {
-                array_push($invalid, $article);
+                array_push($valid, $article);
             }
         }
 
-        return array_diff($result, $invalid);
+        return $valid;
     }
 
     /**
@@ -245,9 +245,14 @@ class DBModel
      */
     public function addArticle($article_text, $user, $images, $title, $headerImage)
     {
-        //$stmt = $this -> pdo -> prepare("INSERT INTO ".TABLE_ARTICLES." VALUES (NULL, 0, \"".$article_text."\", \"".$title."\", \"".$images."\", \"".$user."\", NULL, NULL, NULL, \"".$headerImage."\", NULL, NULL, NULL)")
-        $query = "INSERT INTO ".TABLE_ARTICLES." VALUES (NULL, 0, \"".$article_text."\", \"".$title."\", \"".$images."\", \"".$user."\", NULL, NULL, NULL, \"".$headerImage."\", NULL, NULL, NULL)";
-        $this -> pdo -> query($query);
+        $stmt = $this -> pdo -> prepare("INSERT INTO ".TABLE_ARTICLES." VALUES (:null, :appr, :text, :title, :img, :user, :null, :null, :null, :hdr, :null, :null, :null)");
+        $stmt -> bindValue(":null", NULL);
+        $stmt -> bindValue(":appr", 0);
+        $stmt -> bindValue(":text", $article_text);
+        $stmt -> bindValue(":title", $title);
+        $stmt -> bindValue(":img", $images);
+        $stmt -> bindValue(":hdr", $headerImage);
+        $stmt -> execute();
     }
 
     /**
@@ -258,20 +263,21 @@ class DBModel
      */
     public function canUserReviewArticle($userID, $articleID)
     {
-        $query = "SELECT * FROM ".TABLE_ARTICLES." WHERE id_article = ".$articleID;
-        $result = $this -> pdo -> query($query) -> fetchAll();
+        $stmt = $this -> pdo -> prepare("SELECT * FROM ".TABLE_ARTICLES." WHERE id_article = ?");
+        $stmt -> execute([$articleID]);
+        $result = $stmt -> fetchAll();
 
         $result = $result[0];
 
-        if ($result['reviewer1'] == $userID)
+        if ($result['reviewer1'] == $userID && $result['review1'] != null)
         {
             return 1;
         }
-        else if ($result['reviewer2'] == $userID)
+        else if ($result['reviewer2'] == $userID && $result['review2'] != null)
         {
             return 2;
         }
-        else if ($result['reviewer3'] == $userID)
+        else if ($result['reviewer3'] == $userID && $result['review3'] != null)
         {
             return 3;
         }
@@ -291,14 +297,41 @@ class DBModel
      */
     public function addReviewToArticle($userID, $reviewText, $articleID, $reviewerNumber, $score)
     {
-        $query = "INSERT INTO ".TABLE_REVIEWS." VALUES (NULL, \"".$userID."\", ".$score.", \"".$reviewText."\")";
-        $this -> pdo -> query($query);
+        $stmt = $this -> pdo -> prepare("INSERT INTO ".TABLE_REVIEWS." VALUES (:null, :user, :score, :text)");
+        $stmt -> bindValue(":null", NULL);
+        $stmt -> bindValue(":user", $userID);
+        $stmt -> bindValue(":score", $score);
+        $stmt -> bindValue(":text", $reviewText);
+        $stmt -> execute();
 
-        $query = "SELECT id_review FROM ".TABLE_REVIEWS." ORDER BY id_review DESC LIMIT 1";     // Workaround solution, had problems adding identity to the table. SCOPE_INDENTITY() would be the proper solution
-        $reviewID = $this -> pdo -> query($query) -> fetchAll()[0];
+        $reviewID =  $this -> pdo -> lastInsertId();
 
-        $query = "UPDATE ".TABLE_ARTICLES." SET review".$reviewerNumber." = ".$reviewID." WHERE id_article = ".$articleID;
-        $this -> pdo -> query($query);
+        $stmt = $this -> pdo -> prepare("UPDATE ".TABLE_ARTICLES." SET review".$reviewerNumber." = ? WHERE id_article = ?");
+        $stmt -> execute([$reviewID, $articleID]);
+
+        echo $stmt -> queryString;
+    }
+
+    /**
+     * Deletes article with a given ID
+     * @param $articleID int id of article
+     */
+    public function deleteArticle($articleID)
+    {
+        $stmt = $this -> pdo -> prepare("DELETE FROM ".TABLE_ARTICLES." WHERE id_article = ?");
+        $stmt -> execute([$articleID]);
+    }
+
+    /**
+     * Returns all articles where author is given user
+     * @param $userID int user id
+     * @return array articles
+     */
+    public function getUserArticles($userID)
+    {
+        $stmt = $this -> pdo -> prepare("SELECT * FROM ".TABLE_ARTICLES." WHERE article_author = ?");
+        $stmt -> execute([$userID]);
+        return $stmt -> fetchAll();
     }
 
 }

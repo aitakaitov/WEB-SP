@@ -87,6 +87,7 @@ if ($login -> getUserPrivileges() != "admin") // If the user has nothing to do h
                 <th scope="col">Reviewer 2</th>
                 <th scope="col">Reviewer 3</th>
                 <th scope="col">Save</th>
+                <th scope="col">Delete</th>
             </tr>
             </thead>
             <tbody>
@@ -109,7 +110,7 @@ if ($login -> getUserPrivileges() != "admin") // If the user has nothing to do h
                                             {
                                                 echo "<option value='" . $user['id_user'] . "' selected>" . $user['nick'] . "</option>";        // Use him as default for this cell
                                                 $userSelected = true;
-                                            } else
+                                            } else if ($article['article_author'] != $user['id_user'])
                                                 {
                                                     echo "<option value='" . $user['id_user'] . "'>" . $user['nick'] . "</option>";     // Echo all the others
                                                 }
@@ -131,7 +132,7 @@ if ($login -> getUserPrivileges() != "admin") // If the user has nothing to do h
                                         {
                                             echo "<option value='" . $user['id_user'] . "' selected>" . $user['nick'] . "</option>";        // Use him as default for this cell
                                             $userSelected = true;
-                                        } else
+                                        } else if ($article['article_author'] != $user['id_user'])
                                         {
                                             echo "<option value='" . $user['id_user'] . "'>" . $user['nick'] . "</option>";     // Echo all the others
                                         }
@@ -153,7 +154,7 @@ if ($login -> getUserPrivileges() != "admin") // If the user has nothing to do h
                                         {
                                             echo "<option value='" . $user['id_user'] . "' selected>" . $user['nick'] . "</option>";        // Use him as default for this cell
                                             $userSelected = true;
-                                        } else
+                                        } else if ($article['article_author'] != $user['id_user'])
                                         {
                                             echo "<option value='" . $user['id_user'] . "'>" . $user['nick'] . "</option>";     // Echo all the others
                                         }
@@ -167,6 +168,11 @@ if ($login -> getUserPrivileges() != "admin") // If the user has nothing to do h
                         </td>
                         <td>
                             <button class="btn btn-info" type="submit" name="id_article" value="<?php echo $article['id_article']; ?>">Save</button>
+                        </td>
+                    </form>
+                    <form action="Actions/DeleteArticleAction.php" method="post">
+                        <td>
+                            <button class="btn btn-danger" type="submit" name="id_article" value="<?php echo $article['id_article']; ?>">Delete</button>
                         </td>
                     </form>
                 <tr>
