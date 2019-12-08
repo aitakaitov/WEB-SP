@@ -38,7 +38,7 @@ const WEB_PAGES = array
         "class_name" => "MainPageController",
         "title" => "Main page",
         "key" => "mainpage",    // Key for referencing the page in <a href...>
-        "access" => "all"       // Everyone can access the page     all - everyone, logged - logged in users, unlogged - unlogged users, admin - admin users, except - not in navbar
+        "access" => "except"       // Everyone can access the page     all - everyone, logged - logged in users, unlogged - unlogged users, admin - admin users, except - not in navbar
     ),
 
     "register" => array
@@ -102,6 +102,15 @@ const WEB_PAGES = array
         "title" => "My Articles",
         "key" => "myarticles",
         "access" => "logged"
+    ),
+
+    "userinfo" => array
+    (
+        "file_name" => "UserInfoPageController.php",
+        "class_name" => "UserInfoPageController",
+        "title" => "User Info",
+        "key" => "userinfo",
+        "access" => "except"
     )
 );
 

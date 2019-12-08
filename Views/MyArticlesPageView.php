@@ -16,6 +16,7 @@ $stdTemplates -> getHTMLHeader($templateData['title'], $templateData['pages'], $
 
 <div class="container h-75">
     <h2 class="text-center p-3">My Articles</h2>
+    <p>Here you can see all your articles with their score. "Not assigned" means that no reviewer has been assigned to that spot. "No score" means, that the review has not been done yet. In the last column you can see whether the article has been approved or not.</p>
     <table class="table pb-3">
         <thead>
             <tr>
@@ -28,7 +29,25 @@ $stdTemplates -> getHTMLHeader($templateData['title'], $templateData['pages'], $
             </tr>
         </thead>
         <tbody>
-
+            <?php
+            foreach ($templateData['articles'] as $article)
+            {
+                ?>
+            <tr>
+                <td><?php echo $article['id_article']; ?></td>
+                <td class="text-truncate"><?php echo $article['title']; ?></td>
+                <td><?php echo $article['score1']; ?></td>
+                <td><?php echo $article['score2']; ?></td>
+                <td><?php echo $article['score3']; ?></td>
+                <td><?php if ($article['approved'] == 0) {echo "Not approved";} else {echo "Approved";} ?></td>
+            </tr>
+                <?php
+            }
+            ?>
         </tbody>
     </table>
+    <hr style="margin-top: -12px; padding-bottom: 10px" />
 </div>
+<?php
+$stdTemplates -> getHTMLFooter();
+?>

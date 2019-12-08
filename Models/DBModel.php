@@ -334,4 +334,10 @@ class DBModel
         return $stmt -> fetchAll();
     }
 
+    public function updateUserInfo($userInfo, $userID)
+    {
+        $stmt = $this -> pdo -> prepare("UPDATE ".TABLE_USERS." SET (nick = ?, name = ?, surname = ?, email = ?, password = ?) WHERE id_user = ?");
+        $stmt -> execute([$userInfo['nick'], $userInfo['name'], $userInfo['surname'], $userInfo['email'], $userInfo['password'], $userID]);
+    }
+
 }

@@ -106,7 +106,7 @@ if ($login -> getUserPrivileges() != "admin") // If the user has nothing to do h
                                     $userSelected = false;
                                     foreach ($templateData['users'] as $user)       // For each user
                                     {
-                                            if ($article['reviewer1'] == $user['id_user'])  // If user was already selected before
+                                            if ($article['reviewer1'] == $user['id_user'] && $article['article_author'] != $user['id_user'])  // If user was already selected before
                                             {
                                                 echo "<option value='" . $user['id_user'] . "' selected>" . $user['nick'] . "</option>";        // Use him as default for this cell
                                                 $userSelected = true;
@@ -128,7 +128,7 @@ if ($login -> getUserPrivileges() != "admin") // If the user has nothing to do h
                                 $userSelected = false;
                                 foreach ($templateData['users'] as $user)       // For each user
                                 {
-                                        if ($article['reviewer2'] == $user['id_user'])  // If user was already selected before
+                                        if ($article['reviewer2'] == $user['id_user'] && $article['article_author'] != $user['id_user'])  // If user was already selected before
                                         {
                                             echo "<option value='" . $user['id_user'] . "' selected>" . $user['nick'] . "</option>";        // Use him as default for this cell
                                             $userSelected = true;
@@ -150,7 +150,7 @@ if ($login -> getUserPrivileges() != "admin") // If the user has nothing to do h
                                 $userSelected = false;
                                 foreach ($templateData['users'] as $user)       // For each user
                                 {
-                                        if ($article['reviewer3'] == $user['id_user'])  // If user was already selected before
+                                        if ($article['reviewer3'] == $user['id_user'] && $article['article_author'] != $user['id_user'])  // If user was already selected before
                                         {
                                             echo "<option value='" . $user['id_user'] . "' selected>" . $user['nick'] . "</option>";        // Use him as default for this cell
                                             $userSelected = true;

@@ -53,10 +53,51 @@ class MyArticlesPageController implements IController
         $templateData['pages'] = $pages;
         $templateData['articles'] = $this -> db -> getUserArticles($this -> login -> getUserInfo()['id']);
 
-        foreach ($templateData['articles'] as $article)
+        $index = 0;
+        foreach ($templateData['articles'] as $article)             // Get reviews for articles
         {
             $reviews = $this -> db -> getArticleReviews($article['id_article']);
-            $article['score1'] = $reviews[0];
+
+            if ($article['reviewer1'] == null)      // If no reviewers have been assigned -> "Not assigned"
+            {
+                $templateData['articles'][$index]['score1'] = "Not assigned";
+            }
+            else if ($article['review1'] != null)   // If reviewer assigned and review present -> score
+                {
+                    $templateData['articles'][$index]['score1'] = $reviews[0]['points'];
+                }
+            else    // Id reviewer assigned but no review present -> "No score"
+            {
+                $templateData['articles'][$index]['score1'] = "No score";
+            }
+
+            if ($article['reviewer2'] == null)
+            {
+                $templateData['articles'][$index]['score2'] = "Not assigned";
+            }
+            else if ($article['review2'] != null)
+                {
+                    $templateData['articles'][$index]['score2'] = $reviews[1]['points'];
+                }
+            else
+            {
+                $templateData['articles'][$index]['score2'] = "No score";
+            }
+
+            if ($article['reviewer3'] == null)
+            {
+                $templateData['articles'][$index]['score3'] = "Not assigned";
+            }
+            else if ($article['review3'] != null)
+                {
+                    $templateData['articles'][$index]['score3'] = $reviews[2]['points'];
+                }
+            else
+                {
+                    $templateData['articles'][$index]['score3'] = "No score";
+                }
+
+            $index++;
         }
 
         ob_start();

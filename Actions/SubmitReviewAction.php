@@ -43,6 +43,6 @@ $db -> addReviewToArticle($userID, $text, $articleID, $reviewerNumber, $score); 
 <!doctype html>
 <html>
 <head>
-    <!-- <meta http-equiv="refresh" content="0;url=../index.php?page=reviews"> -->
+    <meta http-equiv="refresh" content="0;url=../index.php?page=reviews">
 </head>
 </html>

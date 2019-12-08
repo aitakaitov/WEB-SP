@@ -1,9 +1,14 @@
 body {
-    padding-top: 80px;          /* So that the navbar doesnt cover content */
+    padding-top: 70px;          /* So that the navbar doesnt cover content */
 }
-@media (max-width: 979px) {
+@media (max-width: 991px) {
     body {
-        padding-top: 80px;
+        padding-top: 100px;
+    }
+}
+@media (max-width: 576px) {
+    body {
+        padding-top: 65px;
     }
 }
 @media (max-width: 262px) {
@@ -11,6 +16,7 @@ body {
         padding-top: 110px;
     }
 }
+
 
 #login-dp {                                     /* from https://bootsnipp.com/snippets/DV3m4 */
     min-width: 250px;

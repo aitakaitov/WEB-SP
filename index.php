@@ -17,6 +17,10 @@ class WebApp
         require_once(CONTROLLERS_DIR."/IController.php");
     }
 
+    /**
+     * Start function
+     * check if GET page exists in pages - if yes, reroute to that page controller, if not, reroute to default
+     */
     public function start()
     {
         // Test whether the specified page actually exists

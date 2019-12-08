@@ -66,7 +66,7 @@ class StandardTemplates
                 <link rel="stylesheet" href="Views/Styles/universal_styles.css">    <!-- CSS for navbar padding -->
                 <title><?php echo $title;?></title>
             </head>
-            <body class="body-padding">
+            <body>
                 <!-- NAVBAR -->
                  <nav class="navbar navbar-expand-sm navbar-light bg-light shadow fixed-top">
                      <div class="container">
@@ -136,7 +136,7 @@ class StandardTemplates
                                  <a class="nav-link" href="Actions/LogoutAction.php">Logout</a>
                              </li>
                              <li class="nav-item">
-                                 <span class="navbar-text font-weight-bold ml-5"><?php echo $_SESSION['name']." (".$_SESSION['privileges'].")"; ?></span>
+                                 <span class="font-weight-bold"><a class="nav-link ml-3" href="?page=userinfo"><?php echo $_SESSION['name']." (".$_SESSION['privileges'].")"; ?></a></span>
                              </li>
                          </ul>
                                         <?php
