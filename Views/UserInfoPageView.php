@@ -21,7 +21,7 @@ $stdTemplates -> getHTMLHeader($templateData['title'], $templateData['pages'], $
         if ($templateData['userInfo'] == null)
         {
             ?>
-            <h4 class="text-center">You are not logged in. If you want to see this page, please log in or register.</h4>
+            <h4 class="text-center pb-3">You are not logged in. If you want to see this page, please log in or register.</h4>
             <?php
         } else
             {
@@ -54,6 +54,14 @@ $stdTemplates -> getHTMLHeader($templateData['title'], $templateData['pages'], $
                     <div class="form-group text-left pt-3">
                         <label for="input_current_password">Password:</label>
                         <input type="password" name="current_password" class="form-control" id="input_current_password"  placeholder="Current password" required>
+                        <?php
+                        if (isset($templateData['error']) && $templateData['error'] == "password")
+                        {
+                            ?>
+                            <small class="text-danger">Incorrect password</small>
+                            <?php
+                        }
+                        ?>
                     </div>
                     <button class="btn btn-info" type="submit">Save changes</button>
                 </form>

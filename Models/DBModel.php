@@ -252,6 +252,7 @@ class DBModel
         $stmt -> bindValue(":title", $title);
         $stmt -> bindValue(":img", $images);
         $stmt -> bindValue(":hdr", $headerImage);
+        $stmt -> bindValue(":user", $user);
         $stmt -> execute();
     }
 
@@ -336,8 +337,9 @@ class DBModel
 
     public function updateUserInfo($userInfo, $userID)
     {
-        $stmt = $this -> pdo -> prepare("UPDATE ".TABLE_USERS." SET (nick = ?, name = ?, surname = ?, email = ?, password = ?) WHERE id_user = ?");
+        $stmt = $this -> pdo -> prepare("UPDATE ".TABLE_USERS." SET nick = ?, name = ?, surname = ?, email = ?, password = ? WHERE id_user = ?");
         $stmt -> execute([$userInfo['nick'], $userInfo['name'], $userInfo['surname'], $userInfo['email'], $userInfo['password'], $userID]);
+
     }
 
 }

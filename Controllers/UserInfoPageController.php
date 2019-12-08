@@ -64,6 +64,11 @@ class UserInfoPageController implements IController
 
         $templateData['pages'] = $pages;
 
+        if (isset($_GET['success']) && $_GET['success'] == "false")
+        {
+            $templateData['error'] = "password";
+        }
+
         // Start the output buffer
         ob_start();
 

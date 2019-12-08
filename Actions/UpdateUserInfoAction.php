@@ -12,8 +12,10 @@ $userID = $temp['id'];
 $nick = $temp['nick'];
 $userInfo;
 
+var_dump($_POST);
+
 // If the password was incorrect
-if (isset($_POST['password']) && !$db -> userLoginCheck($nick, $_POST['password']))
+if (isset($_POST['current_password']) && !$db -> userLoginCheck($nick, $_POST['current_password']))
 {
     ?>
 <!doctype html>
@@ -37,9 +39,9 @@ if (isset($_POST['surname']))
     $userInfo['surname'] = $_POST['surname'];
 }
 
-if (isset($_POST['nick']))
+if (isset($_POST['username']))
 {
-    $userInfo['nick'] = $_POST['nick'];
+    $userInfo['nick'] = $_POST['username'];
 }
 
 if (isset($_POST['email']))
@@ -49,7 +51,22 @@ if (isset($_POST['email']))
 
 if (isset($_POST['new_password']))
 {
-    $userInfo['password'] = $_POST['new_password'];
+    if ($_POST['new_password'] == "")       // If new password is set but is empty, we will set the new password to be same as the old one, effectively eliminating change
+    {
+        $userInfo['password'] = $_POST['current_password'];
+    } else
+        {
+            $userInfo['password'] = $_POST['new_password'];
+        }
 }
 
 $db -> updateUserInfo($userInfo, $userID);
+
+?>
+
+<!doctype html>
+<html>
+<head>
+    <meta http-equiv="refresh" content="0;url=../index.php?page=userinfo">
+</head>
+</html>
