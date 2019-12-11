@@ -38,6 +38,7 @@ if ($login -> getUserPrivileges() != "admin") // If the user has nothing to do h
                 <th scope="col">Surname</th>
                 <th scope="col">Email</th>
                 <th scope="col">Privilege</th>
+                <th scope="col">Save</th>
                 <th scope="col">Delete</th>
             </tr>
             </thead>
@@ -52,11 +53,45 @@ if ($login -> getUserPrivileges() != "admin") // If the user has nothing to do h
                     <td><?php echo $user['name']; ?></td>
                     <td><?php echo $user['surname']; ?></td>
                     <td><?php echo $user['email']; ?></td>
-                    <td><?php echo $user['privilege']; ?></td>
+                    <form method="post" action="Actions/ChangeUserPrivilegesAction.php">
                     <td>
-                        <form method="post" action="Actions/DeleteUserAction.php"><input type="hidden" name="id_user"
-                                                                                         value="<?php echo $user['id_user']; ?>">
-                            <button type="submit" class="btn btn-danger" name="action" value="delete">Delete</button>
+                        <select class="browser-default custom-select" name="privilege">
+                            <?php
+                            foreach (PRIVILEGES as $privilege)      // Print our all the privileges
+                            {
+                                if ($user['privilege'] == "admin")  // If the user is admin, print only admin and nothing else
+                                {
+                                    ?>
+                                    <option value="<?php echo $user['privilege']; ?>" selected><?php echo $user['privilege']; ?></option>
+                                    <?php
+                                    break;
+                                }
+
+                                if ($user['privilege'] == $privilege)       // If the user has the privilege, mark it as selected
+                                {
+                                    ?>
+                                    <option value="<?php echo $user['privilege']; ?>" selected><?php echo $user['privilege']; ?></option>
+                                    <?php
+                                } else      // Else continue
+                                    {
+                                        ?>
+                                        <option value="<?php echo $privilege; ?>"><?php echo $privilege; ?></option>
+                                        <?php
+                                    }
+                                ?>
+                                <?php
+                            }
+                            ?>
+                    </td>
+                    <td>
+                            <input type="hidden" name="id_user" value="<?php echo $user['id_user']; ?>">
+                            <button type="submit" class="btn btn-info" name="action" value="save">Save</button>
+                    </td>
+                    </form>
+                    <td>
+                        <form method="post" action="Actions/DeleteUserAction.php">
+                            <input type="hidden" name="id_user" value="<?php echo $user['id_user'];?>">
+                            <button type="submit" class="btn btn-danger" name="action" value="delete" <?php if ($user['privilege'] == "admin") {echo "aria-disabled='true' disabled";}?> >Delete</button>
                         </form>
                     </td>
                 </tr>
@@ -104,8 +139,14 @@ if ($login -> getUserPrivileges() != "admin") // If the user has nothing to do h
                             <select class="browser-default custom-select" name="reviewer1">
                                 <?php
                                     $userSelected = false;
-                                    foreach ($templateData['users'] as $user)       // For each user
+                                    foreach ($templateData['reviewers'] as $user)       // For each user
                                     {
+                                            if ($article['review1'] != null)    // If the review is already written, the reviewer cannot be changed
+                                            {
+                                                echo "<option value='" . $article['reviewer1'] . "' selected>Review done</option>";
+                                                break;
+                                            }
+
                                             if ($article['reviewer1'] == $user['id_user'] && $article['article_author'] != $user['id_user'])  // If user was already selected before
                                             {
                                                 echo "<option value='" . $user['id_user'] . "' selected>" . $user['nick'] . "</option>";        // Use him as default for this cell
@@ -126,8 +167,14 @@ if ($login -> getUserPrivileges() != "admin") // If the user has nothing to do h
                             <select class="browser-default custom-select" name="reviewer2">
                                 <?php
                                 $userSelected = false;
-                                foreach ($templateData['users'] as $user)       // For each user
+                                foreach ($templateData['reviewers'] as $user)       // For each user
                                 {
+                                        if ($article['review2'] != null)    // If the review is already written, the reviewer cannot be changed
+                                        {
+                                            echo "<option value='" . $article['reviewer2'] . "' selected>Review done</option>";
+                                            break;
+                                        }
+
                                         if ($article['reviewer2'] == $user['id_user'] && $article['article_author'] != $user['id_user'])  // If user was already selected before
                                         {
                                             echo "<option value='" . $user['id_user'] . "' selected>" . $user['nick'] . "</option>";        // Use him as default for this cell
@@ -148,8 +195,14 @@ if ($login -> getUserPrivileges() != "admin") // If the user has nothing to do h
                             <select class="browser-default custom-select" name="reviewer3">
                                 <?php
                                 $userSelected = false;
-                                foreach ($templateData['users'] as $user)       // For each user
+                                foreach ($templateData['reviewers'] as $user)       // For each user
                                 {
+                                        if ($article['review3'] != null)    // If the review is already written, the reviewer cannot be changed
+                                        {
+                                            echo "<option value='" . $article['reviewer3'] . "' selected>Review done</option>";
+                                            break;
+                                        }
+
                                         if ($article['reviewer3'] == $user['id_user'] && $article['article_author'] != $user['id_user'])  // If user was already selected before
                                         {
                                             echo "<option value='" . $user['id_user'] . "' selected>" . $user['nick'] . "</option>";        // Use him as default for this cell

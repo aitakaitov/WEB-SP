@@ -6,11 +6,11 @@ $db = new DBModel();
 
 // Take info from POST
 $userInfo = [];
-$userInfo['nickname'] = $_POST['nickname'];
-$userInfo['name'] = $_POST['name'];
-$userInfo['surname'] = $_POST['surname'];
-$userInfo['email'] = $_POST['email'];
-$userInfo['password'] = $_POST['password'];
+$userInfo['nickname'] = htmlspecialchars($_POST['nickname']);
+$userInfo['name'] = htmlspecialchars($_POST['name']);
+$userInfo['surname'] = htmlspecialchars($_POST['surname']);
+$userInfo['email'] = htmlspecialchars($_POST['email']);
+$userInfo['password'] = $_POST['password'];                 // Password is never outputted into HTML
 
 // Try to create new user
 if ($db -> addUser($userInfo))

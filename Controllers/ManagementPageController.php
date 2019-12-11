@@ -63,6 +63,7 @@ class ManagementPageController implements IController
 
         $templateData['pages'] = $pages;
         $templateData['users'] = $this -> db -> getAllUsers();                                                                      // ----------------------- GET THE USERS --------------------------------
+        $templateData['reviewers'] = $this -> db -> getAllUsersWithPrivilege("reviewer");
 
         $templateData['articles'] = $this -> db -> getAllArticles(0);                                                      // ----------------------- GET UNAPPROVED ARTICLES ---------------
 

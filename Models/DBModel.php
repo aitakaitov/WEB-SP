@@ -87,8 +87,8 @@ class DBModel
      */
     public function getAllUsers()
     {
-        $stmt = $this -> pdo -> prepare("SELECT * FROM ".TABLE_USERS." WHERE privilege != ? AND active = ? ORDER BY nick ASC");
-        $stmt -> execute(["admin", 1]);
+        $stmt = $this -> pdo -> prepare("SELECT * FROM ".TABLE_USERS." WHERE active = ? ORDER BY nick ASC");
+        $stmt -> execute([1]);
         $result = $stmt -> fetchAll();
 
         return $result;
@@ -270,15 +270,15 @@ class DBModel
 
         $result = $result[0];
 
-        if ($result['reviewer1'] == $userID && $result['review1'] != null)
+        if ($result['reviewer1'] == $userID && $result['review1'] == null)
         {
             return 1;
         }
-        else if ($result['reviewer2'] == $userID && $result['review2'] != null)
+        else if ($result['reviewer2'] == $userID && $result['review2'] == null)
         {
             return 2;
         }
-        else if ($result['reviewer3'] == $userID && $result['review3'] != null)
+        else if ($result['reviewer3'] == $userID && $result['review3'] == null)
         {
             return 3;
         }
@@ -335,11 +335,38 @@ class DBModel
         return $stmt -> fetchAll();
     }
 
+    /**
+     * Updates user info
+     * @param $userInfo array user info
+     * @param $userID int id
+     */
     public function updateUserInfo($userInfo, $userID)
     {
         $stmt = $this -> pdo -> prepare("UPDATE ".TABLE_USERS." SET nick = ?, name = ?, surname = ?, email = ?, password = ? WHERE id_user = ?");
         $stmt -> execute([$userInfo['nick'], $userInfo['name'], $userInfo['surname'], $userInfo['email'], $userInfo['password'], $userID]);
+    }
 
+    /**
+     * updates user privileges
+     * @param $userID int id user
+     * @param $privilege string privilege
+     */
+    public function setUserPrivilege($userID, $privilege)
+    {
+        $stmt = $this -> pdo -> prepare("UPDATE ".TABLE_USERS." SET privilege = ? WHERE id_user = ?");
+        $stmt -> execute([$privilege, $userID]);
+    }
+
+    /**
+     * Returns all user with given privilege
+     * @param $privilege string
+     * @return array
+     */
+    public function getAllUsersWithPrivilege($privilege)
+    {
+        $stmt = $this -> pdo -> prepare("SELECT * FROM ".TABLE_USERS." WHERE privilege = ?");
+        $stmt -> execute([$privilege]);
+        return $stmt -> fetchAll();
     }
 
 }

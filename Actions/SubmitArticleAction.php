@@ -1,11 +1,25 @@
 <?php
-
 require_once(realpath($_SERVER['DOCUMENT_ROOT'])."/web/settings.php");
 require_once(realpath($_SERVER['DOCUMENT_ROOT'])."/web/".MODELS_DIR."/DBModel.php");
 require_once(realpath($_SERVER['DOCUMENT_ROOT'])."/web/".SESS_DIR."/WebLogin.php");
 
 $db = new DBModel();
 $login = new WebLogin();
+
+if (empty($_POST))     // If we exceed the POST_MAX_SIZE = 30M, then POST will actually be empty
+{
+
+    ?>
+    <!doctype html>
+    <html>
+    <head>
+        <meta http-equiv="refresh" content="0;url=../index.php?page=newarticle&success=false">
+    </head>
+    </html>
+    <?php
+    exit;
+
+}
 
 if (isset($_POST['article_text']) && !empty($_POST['article_text']))        // check if article text is present
 {
@@ -14,7 +28,7 @@ if (isset($_POST['article_text']) && !empty($_POST['article_text']))        // c
 
 if (isset($_POST['title']) && !empty($_POST['title']))
 {
-    $title = $_POST['title'];
+    $title = htmlspecialchars($_POST['title']);
 }
 
 $images = array_filter($_FILES['images']['name']);                          // Filter out empty names
@@ -56,7 +70,6 @@ for ($i = 0; $i < $count; $i++)              // Take max five images
 }
 $user = $db -> getUserByNick($login ->getUserInfo()['nick']);       // Get author ID
 $db -> addArticle($articleText, $user[0]['id_user'], $imagesString, $title, $headerImage);
-
 ?>
 
 <!doctype html>

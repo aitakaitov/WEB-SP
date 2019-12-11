@@ -31,25 +31,25 @@ if (isset($_POST['current_password']) && !$db -> userLoginCheck($nick, $_POST['c
 
 if (isset($_POST['name']))
 {
-    $userInfo['name'] = $_POST['name'];
+    $userInfo['name'] = htmlspecialchars($_POST['name']);
 }
 
 if (isset($_POST['surname']))
 {
-    $userInfo['surname'] = $_POST['surname'];
+    $userInfo['surname'] = htmlspecialchars($_POST['surname']);
 }
 
 if (isset($_POST['username']))
 {
-    $userInfo['nick'] = $_POST['username'];
+    $userInfo['nick'] = htmlspecialchars($_POST['username']);
 }
 
 if (isset($_POST['email']))
 {
-    $userInfo['email'] = $_POST['email'];
+    $userInfo['email'] = htmlspecialchars($_POST['email']);
 }
 
-if (isset($_POST['new_password']))
+if (isset($_POST['new_password']))      // Password wont be sanitized as it will never be shown in HTML
 {
     if ($_POST['new_password'] == "")       // If new password is set but is empty, we will set the new password to be same as the old one, effectively eliminating change
     {

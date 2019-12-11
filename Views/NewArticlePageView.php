@@ -25,6 +25,15 @@ if (isset($_GET['success']) && !empty($_GET['success']) && $_GET['success'] == "
     </div>
     <?php
 }
+else if (isset($_GET['success']) && !empty($_GET['success']) && $_GET['success'] == "false")
+{
+    ?>
+    <div class="container h-75">
+        <h3 class="text-center">Article has not been submitted.</h3>
+        <p class="text-center pb-3">You have exceeded the total image size limit and so the article has not been submitted. The maximum total file size is 28MB and the maximum number of images is 5. Please resubmit the article.</p>
+    </div>
+    <?php
+}
 else
     {
 ?>
@@ -78,6 +87,9 @@ else
                 ],
                 fontNames: ['Helvetica', 'Arial'],
                 disableDragAndDrop: true,
+                codeviewFilter: true,           // XSS filtering
+                codeviewIframeFilter: true,
+                codeviewIframeWhitelistSrcBase: [],     // allow no iframes
                 callbacks:                                  // Function to stop characters at a given number
                     {
                         callbacks:                                  // Function to stop characters at a given number from https://42coders.com/characters-count-in-summernote-wysiwyg stripped of character counter //

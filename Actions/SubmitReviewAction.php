@@ -8,7 +8,7 @@ $login = new WebLogin();
 
 if (isset($_POST['score']))  // Parse score
 {
-    $score = $_POST['score'];
+    $score = htmlspecialchars($_POST['score']);
 
     $score = round($score);
 

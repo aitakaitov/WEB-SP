@@ -5,7 +5,7 @@ require_once(realpath($_SERVER['DOCUMENT_ROOT'])."/web/".SESS_DIR."/WebLogin.php
 // Create login manager
 $login = new WebLogin();
 // Try to login user
-$login -> login($_POST['username'], $_POST['password']);
+$login -> login($_POST['username'], $_POST['password']);        // No need to sanitize as we are just checking with the database
 
 // Then redirect
 ?>

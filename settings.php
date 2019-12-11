@@ -114,6 +114,13 @@ const WEB_PAGES = array
     )
 );
 
+const PRIVILEGES = array
+(
+    "user",
+    "admin",
+    "reviewer"
+);
+
 // Default web page
 const DEFAULT_WEB_PAGE = "mainpage";
 

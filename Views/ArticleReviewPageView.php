@@ -38,7 +38,7 @@ else if (is_null($templateData['error']))       // -----------------------------
 {
     $article = $templateData['article'][0];
     ?>
-    <div class="container h-75">
+    <div class="container w-75">
         <h2 class="text-center p-3">Article to review</h2>
         <h4 class="text-center pb-2"><?php echo $article['title']; ?></h4>
         <?php echo $article['text']; ?>
@@ -102,8 +102,11 @@ else if (is_null($templateData['error']))       // -----------------------------
                     ],
                     fontNames: ['Helvetica', 'Arial'],
                     disableDragAndDrop: true,
+                    codeviewFilter: true,           // XSS filtering
+                    codeviewIframeFilter: true,
+                    codeviewIframeWhitelistSrcBase: [],     // allow no iframes
                     callbacks:                                  // Function to stop characters at a given number from https://42coders.com/characters-count-in-summernote-wysiwyg stripped of character counter //
-                        {                                       // Which did not work unfortunately
+                        {                                       // which did not work unfortunately
                             onkeydown:function(e)
                             {
                                 var charLimit = 50;
