@@ -72,6 +72,12 @@ for ($i = 0; $i < $count; $i++)              // Take max five images
         move_uploaded_file($tmpFilePath, "..".$newFilePath);
     }
 }
+
+if ($count == 0)
+{
+    $headerImage = "/web/Views/img/default-header.jpg";
+}
+
 $user = $db -> getUserByNick($login ->getUserInfo()['nick']);       // Get author ID
 $db -> addArticle($articleText, $user[0]['id_user'], $imagesString, $title, $headerImage);
 ?>
