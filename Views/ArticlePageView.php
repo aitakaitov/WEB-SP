@@ -78,7 +78,10 @@ if (is_null($article))
                             <p class="text-left"><?php echo $review['text']; ?></p>
                         </div>
                         <div>
-                            <p class="text-muted">Rating: <?php echo $review['points']; ?>/10</p>
+                            <p class="text-muted">Text score: <?php echo $review['text_points']; ?>/10</p>
+                            <p class="text-muted">Photos score: <?php echo $review['photo_points']; ?>/10</p>
+                            <p class="text-muted">Location score: <?php echo $review['location_points']; ?>/10</p>
+
                         </div>
                     </div>
                     <hr/>

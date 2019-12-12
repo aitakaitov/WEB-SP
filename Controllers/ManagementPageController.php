@@ -65,7 +65,18 @@ class ManagementPageController implements IController
         $templateData['users'] = $this -> db -> getAllUsers();                                                                      // ----------------------- GET THE USERS --------------------------------
         $templateData['reviewers'] = $this -> db -> getAllUsersWithPrivilege("reviewer");
 
-        $templateData['articles'] = $this -> db -> getAllArticles(0);                                                      // ----------------------- GET UNAPPROVED ARTICLES ---------------
+        $templateData['articles'] = $this -> db -> getAllArticles(0);           // ----------------------- GET UNAPPROVED ARTICLES ---------------
+
+        $index = 0;
+        foreach ($templateData['articles'] as $article)         // Mark articles, which can be approved (which have all reviews done)
+        {
+            if ($article['review1'] != null && $article['review2'] != null && $article['review3'] != null)
+            {
+                $templateData['articles'][$index]['approvable'] = "true";
+            }
+
+            $index++;
+        }
 
         // Start the output buffer
         ob_start();

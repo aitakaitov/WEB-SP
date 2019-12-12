@@ -60,41 +60,59 @@ class MyArticlesPageController implements IController
 
             if ($article['reviewer1'] == null)      // If no reviewers have been assigned -> "Not assigned"
             {
-                $templateData['articles'][$index]['score1'] = "Not assigned";
+                $templateData['articles'][$index]['text_score1'] = "Not assigned";
+                $templateData['articles'][$index]['photo_score1'] = "Not assigned";
+                $templateData['articles'][$index]['location_score1'] = "Not assigned";
             }
             else if ($article['review1'] != null)   // If reviewer assigned and review present -> score
                 {
-                    $templateData['articles'][$index]['score1'] = $reviews[0]['points'];
+                    $templateData['articles'][$index]['text_score1'] = $reviews[0]['text_points'];
+                    $templateData['articles'][$index]['photo_score1'] = $reviews[0]['photo_points'];
+                    $templateData['articles'][$index]['location_score1'] = $reviews[0]['location_points'];
                 }
             else    // Id reviewer assigned but no review present -> "No score"
             {
-                $templateData['articles'][$index]['score1'] = "No score";
+                $templateData['articles'][$index]['text_score1'] = "No score";
+                $templateData['articles'][$index]['photo_score1'] = "No score";
+                $templateData['articles'][$index]['location_score1'] = "No score";
             }
 
             if ($article['reviewer2'] == null)
             {
-                $templateData['articles'][$index]['score2'] = "Not assigned";
+                $templateData['articles'][$index]['text_score2'] = "Not assigned";
+                $templateData['articles'][$index]['photo_score2'] = "Not assigned";
+                $templateData['articles'][$index]['location_score2'] = "Not assigned";
             }
             else if ($article['review2'] != null)
                 {
-                    $templateData['articles'][$index]['score2'] = $reviews[1]['points'];
+                    $templateData['articles'][$index]['text_score2'] = $reviews[1]['text_points'];
+                    $templateData['articles'][$index]['photo_score2'] = $reviews[1]['photo_points'];
+                    $templateData['articles'][$index]['location_score2'] = $reviews[1]['location_points'];
                 }
             else
             {
-                $templateData['articles'][$index]['score2'] = "No score";
+                $templateData['articles'][$index]['text_score2'] = "No score";
+                $templateData['articles'][$index]['photo_score2'] = "No score";
+                $templateData['articles'][$index]['location_score2'] = "No score";
             }
 
             if ($article['reviewer3'] == null)
             {
-                $templateData['articles'][$index]['score3'] = "Not assigned";
+                $templateData['articles'][$index]['text_score3'] = "Not assigned";
+                $templateData['articles'][$index]['photo_score3'] = "Not assigned";
+                $templateData['articles'][$index]['location_score3'] = "Not assigned";
             }
             else if ($article['review3'] != null)
                 {
-                    $templateData['articles'][$index]['score3'] = $reviews[2]['points'];
+                    $templateData['articles'][$index]['text_score3'] = $reviews[2]['text_points'];
+                    $templateData['articles'][$index]['photo_score3'] = $reviews[2]['photo_points'];
+                    $templateData['articles'][$index]['location_score3'] = $reviews[2]['location_points'];
                 }
             else
                 {
-                    $templateData['articles'][$index]['score3'] = "No score";
+                    $templateData['articles'][$index]['text_score3'] = "No score";
+                    $templateData['articles'][$index]['photo_score3'] = "No score";
+                    $templateData['articles'][$index]['location_score3'] = "No score";
                 }
 
             $index++;

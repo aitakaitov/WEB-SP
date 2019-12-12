@@ -294,23 +294,25 @@ class DBModel
      * @param $reviewText string review text
      * @param $articleID int id article
      * @param $reviewerNumber int 1/2/3 - what review this one should be
-     * @param $score int article score
+     * @param $textScore
+     * @param $photoScore
+     * @param $locationScore
      */
-    public function addReviewToArticle($userID, $reviewText, $articleID, $reviewerNumber, $score)
+    public function addReviewToArticle($userID, $reviewText, $articleID, $reviewerNumber, $textScore, $photoScore, $locationScore)
     {
-        $stmt = $this -> pdo -> prepare("INSERT INTO ".TABLE_REVIEWS." VALUES (:null, :user, :score, :text)");
+        $stmt = $this -> pdo -> prepare("INSERT INTO ".TABLE_REVIEWS." VALUES (:null, :user, :text, :textScore, :photoScore, :locationScore)");
         $stmt -> bindValue(":null", NULL);
         $stmt -> bindValue(":user", $userID);
-        $stmt -> bindValue(":score", $score);
         $stmt -> bindValue(":text", $reviewText);
+        $stmt -> bindValue(":textScore", $textScore);
+        $stmt -> bindValue(":photoScore", $photoScore);
+        $stmt -> bindValue(":locationScore", $locationScore);
         $stmt -> execute();
 
         $reviewID =  $this -> pdo -> lastInsertId();
 
         $stmt = $this -> pdo -> prepare("UPDATE ".TABLE_ARTICLES." SET review".$reviewerNumber." = ? WHERE id_article = ?");
         $stmt -> execute([$reviewID, $articleID]);
-
-        echo $stmt -> queryString;
     }
 
     /**
@@ -364,9 +366,19 @@ class DBModel
      */
     public function getAllUsersWithPrivilege($privilege)
     {
-        $stmt = $this -> pdo -> prepare("SELECT * FROM ".TABLE_USERS." WHERE privilege = ?");
-        $stmt -> execute([$privilege]);
+        $stmt = $this -> pdo -> prepare("SELECT * FROM ".TABLE_USERS." WHERE privilege = ? AND active = ?");
+        $stmt -> execute([$privilege, 1]);
         return $stmt -> fetchAll();
+    }
+
+    /**
+     * Sets article to approved
+     * @param $articleID int
+     */
+    public function approveArticle($articleID)
+    {
+        $stmt = $this -> pdo -> prepare("UPDATE ".TABLE_ARTICLES." SET approved = ? WHERE id_article = ?");
+        $stmt -> execute([1, $articleID]);
     }
 
 }
