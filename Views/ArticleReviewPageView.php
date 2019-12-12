@@ -72,10 +72,18 @@ else if (is_null($templateData['error']))       // -----------------------------
                     <small class="text-muted">The character limit is 50 characters, please be brief.</small>
                 </div>
                 <div class="form-group">
-                    <label for="scoreID">Score</label>
-                    <input type="number" max="10" min="0" name="score" class="form-control w-25" id="scoreID" required>
-                    <small class="text-muted">Score the article as <0, 10>. Any other score will be trimmed to fit this range.</small>
+                    <label for="text_score">Text score</label>
+                    <input type="number" max="10" min="0" name="text_score" class="form-control w-25" id="text_score" required>
                 </div>
+                <div class="form-group">
+                    <label for="photo_score">Photos score</label>
+                    <input type="number" max="10" min="0" name="photo_score" class="form-control w-25" id="photo_score" required>
+                </div>
+                <div class="form-group">
+                    <label for="location_score">Location score</label>
+                    <input type="number" max="10" min="0" name="location_score" class="form-control w-25" id="location_score" required>
+                </div>
+                <small class="text-muted">Score the article as <0, 10>. Any other score will be trimmed to fit this range.</small>
                 <div class="form-group">
                     <button type="submit" class="btn btn-info" name="article_id_reviewer_number" value="<?php echo $_GET['id']."_".$templateData['reviewer_number'] ?>">Submit review</button>
                 </div>

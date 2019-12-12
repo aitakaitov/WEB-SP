@@ -16,9 +16,11 @@ if ($login -> getUserPrivileges() != "admin") // If the user has nothing to do h
 {
     ?>
         <!doctype html>
-        <head>
-    <meta http-equiv="refresh" content="0;url=?page=mainpage">
-        </head>
+        <html>
+            <head>
+                <meta http-equiv="refresh" content="0;url=?page=mainpage">
+            </head>
+        </html>
     <?php
     die;
 } else {                                                // Otherwise render the HTML
@@ -122,6 +124,7 @@ if ($login -> getUserPrivileges() != "admin") // If the user has nothing to do h
                 <th scope="col">Reviewer 2</th>
                 <th scope="col">Reviewer 3</th>
                 <th scope="col">Save</th>
+                <th scope="col">Approve</th>
                 <th scope="col">Delete</th>
             </tr>
             </thead>
@@ -139,11 +142,13 @@ if ($login -> getUserPrivileges() != "admin") // If the user has nothing to do h
                             <select class="browser-default custom-select" name="reviewer1">
                                 <?php
                                     $userSelected = false;
+                                    $reviewDone = false;
                                     foreach ($templateData['reviewers'] as $user)       // For each user
                                     {
                                             if ($article['review1'] != null)    // If the review is already written, the reviewer cannot be changed
                                             {
                                                 echo "<option value='" . $article['reviewer1'] . "' selected>Review done</option>";
+                                                $reviewDone = true;
                                                 break;
                                             }
 
@@ -156,7 +161,7 @@ if ($login -> getUserPrivileges() != "admin") // If the user has nothing to do h
                                                     echo "<option value='" . $user['id_user'] . "'>" . $user['nick'] . "</option>";     // Echo all the others
                                                 }
                                     }
-                                    if ($userSelected == false)
+                                    if ($userSelected == false && $reviewDone == false)
                                     {
                                         echo "<option selected>Select user</option>";
                                     }
@@ -167,11 +172,13 @@ if ($login -> getUserPrivileges() != "admin") // If the user has nothing to do h
                             <select class="browser-default custom-select" name="reviewer2">
                                 <?php
                                 $userSelected = false;
+                                $reviewDone = false;
                                 foreach ($templateData['reviewers'] as $user)       // For each user
                                 {
                                         if ($article['review2'] != null)    // If the review is already written, the reviewer cannot be changed
                                         {
                                             echo "<option value='" . $article['reviewer2'] . "' selected>Review done</option>";
+                                            $reviewDone = true;
                                             break;
                                         }
 
@@ -184,7 +191,7 @@ if ($login -> getUserPrivileges() != "admin") // If the user has nothing to do h
                                             echo "<option value='" . $user['id_user'] . "'>" . $user['nick'] . "</option>";     // Echo all the others
                                         }
                                 }
-                                if ($userSelected == false)
+                                if ($userSelected == false && $reviewDone == false)
                                 {
                                     echo "<option selected>Select user</option>";
                                     }
@@ -195,11 +202,13 @@ if ($login -> getUserPrivileges() != "admin") // If the user has nothing to do h
                             <select class="browser-default custom-select" name="reviewer3">
                                 <?php
                                 $userSelected = false;
+                                $reviewDone = false;
                                 foreach ($templateData['reviewers'] as $user)       // For each user
                                 {
                                         if ($article['review3'] != null)    // If the review is already written, the reviewer cannot be changed
                                         {
                                             echo "<option value='" . $article['reviewer3'] . "' selected>Review done</option>";
+                                            $reviewDone = true;
                                             break;
                                         }
 
@@ -212,7 +221,7 @@ if ($login -> getUserPrivileges() != "admin") // If the user has nothing to do h
                                             echo "<option value='" . $user['id_user'] . "'>" . $user['nick'] . "</option>";     // Echo all the others
                                         }
                                 }
-                                if ($userSelected == false)
+                                if ($userSelected == false && $reviewDone == false)
                                 {
                                     echo "<option selected>Select user</option>";
                                 }
@@ -223,9 +232,14 @@ if ($login -> getUserPrivileges() != "admin") // If the user has nothing to do h
                             <button class="btn btn-info" type="submit" name="id_article" value="<?php echo $article['id_article']; ?>">Save</button>
                         </td>
                     </form>
+                    <form action="Actions/ApproveArticleAction.php" method="post">
+                        <td>
+                            <button class="btn btn-success" type="submit" name="id_article" value="<?php echo $article['id_article'];?>" <?php if (is_null($article['review1']) || is_null($article['review2']) || is_null($article['review3'])) {echo "aria-disabled='true' disabled";} ?>>Approve</button>
+                        </td>
+                    </form>
                     <form action="Actions/DeleteArticleAction.php" method="post">
                         <td>
-                            <button class="btn btn-danger" type="submit" name="id_article" value="<?php echo $article['id_article']; ?>">Delete</button>
+                            <button class="btn btn-danger" type="submit" name="id_article" value="<?php echo $article['id_article'];?>">Delete</button>
                         </td>
                     </form>
                 <tr>

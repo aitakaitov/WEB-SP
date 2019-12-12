@@ -58,7 +58,11 @@ for ($i = 0; $i < $count; $i++)              // Take max five images
         }
 
         $newFilePath = "/Views/img/".sha1_file($tmpFilePath).".".$extension[1];          // Create new file name with SHA-1 hash
-        $imagesString = $imagesString."/web".$newFilePath.",";                         // So that we can move the images into database
+
+        if ($newFilePath != "/Views")
+        {
+            $imagesString = $imagesString . "/web" . $newFilePath . ",";                         // So that we can move the images into database
+        }
 
         if ($headerImage == null)                                               // The first valid image will be the header image
         {

@@ -7,7 +7,6 @@ $userID = $_POST['id_user'];
 $db = new DBModel();
 
 $db -> deleteUser($userID);
-echo "DELETE USER END";
 
 ?>
    <!doctype html>

@@ -66,7 +66,6 @@ class ArticleReviewPageController implements IController
             else            // If it does
                 {
                     $templateData['reviewer_number'] = $this -> db -> canUserReviewArticle($this -> login -> getUserInfo()['id'], $_GET['id']);     // Get the reviewer number
-                    echo $templateData['reviewer_number'];
                     if ($templateData['reviewer_number'] == -1)     // If -1 -> not allowed and set error flag
                     {
                         $templateData['error'] = "notallowed";

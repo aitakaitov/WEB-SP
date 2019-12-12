@@ -101,9 +101,9 @@ class StandardTemplates
                                 {
                              ?>
                              </ul>
-                             <ul class="navbar-nav nav navbar-right">
-                                 <li class="dropdown">
-                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Login <span class="sparet"> </span></a>
+                             <ul class="navbar-nav nav">
+                                 <li class="dropdown dropleft">
+                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Login <span class="sparet"> </span></a>
                                      <ul id="login-dp" class="dropdown-menu">
                                          <li>
                                              <div class="row h-100 justify-content-center align-items-center">
