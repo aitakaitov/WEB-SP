@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.5
+-- version 4.9.2
 -- https://www.phpmyadmin.net/
 --
--- Počítač: 127.0.0.1:3306
--- Vytvořeno: Čtv 12. pro 2019, 13:43
--- Verze serveru: 5.7.26
--- Verze PHP: 7.2.18
+-- Host: 127.0.0.1
+-- Generation Time: Dec 12, 2019 at 02:17 PM
+-- Server version: 10.4.10-MariaDB
+-- PHP Version: 7.3.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -19,115 +19,163 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Databáze: `conference_db`
+-- Database: `conference_db`
 --
 
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `articles`
+-- Table structure for table `articles`
 --
 
-DROP TABLE IF EXISTS `articles`;
-CREATE TABLE IF NOT EXISTS `articles` (
-  `id_article` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `articles` (
+  `id_article` int(11) NOT NULL,
   `approved` tinyint(4) DEFAULT NULL,
   `text` varchar(3000) COLLATE utf8mb4_czech_ci DEFAULT NULL,
   `title` varchar(50) COLLATE utf8mb4_czech_ci DEFAULT NULL,
-  `images` varchar(250) COLLATE utf8mb4_czech_ci DEFAULT NULL,
+  `images` varchar(350) COLLATE utf8mb4_czech_ci DEFAULT NULL,
   `article_author` int(11) DEFAULT NULL,
   `review1` int(11) DEFAULT NULL,
   `review2` int(11) DEFAULT NULL,
   `review3` int(11) DEFAULT NULL,
-  `introduction_image` varchar(60) COLLATE utf8mb4_czech_ci DEFAULT NULL,
+  `introduction_image` varchar(80) COLLATE utf8mb4_czech_ci DEFAULT NULL,
   `reviewer1` int(11) DEFAULT NULL,
   `reviewer2` int(11) DEFAULT NULL,
-  `reviewer3` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id_article`),
-  KEY `article_author` (`article_author`),
-  KEY `review1` (`review1`),
-  KEY `review2` (`review2`),
-  KEY `review3` (`review3`),
-  KEY `reviewer1` (`reviewer1`),
-  KEY `reviewer2` (`reviewer2`),
-  KEY `reviewer3` (`reviewer3`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_czech_ci;
+  `reviewer3` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_czech_ci;
 
 --
--- Vypisuji data pro tabulku `articles`
+-- Dumping data for table `articles`
 --
 
 INSERT INTO `articles` (`id_article`, `approved`, `text`, `title`, `images`, `article_author`, `review1`, `review2`, `review3`, `introduction_image`, `reviewer1`, `reviewer2`, `reviewer3`) VALUES
-(3, 1, '<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Suspendisse sagittis ultrices augue. Integer malesuada. Duis viverra diam non justo. Etiam egestas wisi a erat. Aliquam ante. Aenean placerat. Aliquam in lorem sit amet leo accumsan lacinia. Fusce consectetuer risus a nunc. Phasellus et lorem id felis nonummy placerat. Aliquam erat volutpat. In sem justo, commodo ut, suscipit at, pharetra vitae, orci. Maecenas fermentum, sem in pharetra pellentesque, velit turpis volutpat ante, in pharetra metus odio a lectus. Etiam ligula pede, sagittis quis, interdum ultricies, scelerisque eu. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Mauris metus.</p><p>Etiam ligula pede, sagittis quis, interdum ultricies, scelerisque eu. Nulla quis diam. Fusce tellus. Morbi scelerisque luctus velit. Mauris tincidunt sem sed arcu. Aenean placerat. Etiam dui sem, fermentum vitae, sagittis id, malesuada in, quam. Sed convallis magna eu sem. Suspendisse sagittis ultrices augue. Aliquam in lorem sit amet leo accumsan lacinia.</p>', 'LOREM IPSUM', 'Views/img/3-0.jpg,Views/img/3-1.jpg,Views/img/3-2.jpg,Views/img/3-3.jpg,Views/img/3-4.jpg', 2, 1, 2, 3, 'Views/img/header-image.jpg', 5, 6, 7),
-(22, 0, '<p style=\"margin-right: 0px; margin-bottom: 8px; margin-left: 0px; text-indent: 20px; font-family: &quot;Trebuchet MS&quot;, &quot;Geneva CE&quot;, lucida, sans-serif; font-size: 13px; text-align: justify;\"><span style=\"font-family: Helvetica;\">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Phasellus rhoncus. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Curabitur bibendum justo non orci. Etiam bibendum elit eget erat. Vivamus ac leo pretium faucibus. Nulla quis diam. Aenean placerat. Praesent id justo in neque elementum ultrices. Proin mattis lacinia justo. Etiam ligula pede, sagittis quis, interdum ultricies, scelerisque eu. Duis ante orci, molestie vitae vehicula venenatis, tincidunt ac pede. Mauris suscipit, ligula sit amet pharetra semper, nibh ante cursus purus, vel sagittis velit mauris vel metus. Aliquam erat volutpat. Quisque tincidunt scelerisque libero. Fusce nibh. Et harum quidem rerum facilis est et expedita distinctio. Fusce tellus odio, dapibus id fermentum quis, suscipit id erat.</span></p><p style=\"margin-right: 0px; margin-bottom: 8px; margin-left: 0px; text-indent: 20px; font-family: &quot;Trebuchet MS&quot;, &quot;Geneva CE&quot;, lucida, sans-serif; font-size: 13px; text-align: justify;\"><span style=\"font-family: Helvetica;\">Maecenas aliquet accumsan leo. Sed ac dolor sit amet purus malesuada congue. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Integer imperdiet lectus quis justo. Aliquam erat volutpat. Maecenas aliquet accumsan leo. Praesent vitae arcu tempor neque lacinia pretium. Vestibulum fermentum tortor id mi. Praesent dapibus. Phasellus enim erat, vestibulum vel, aliquam a, posuere eu, velit. Morbi leo mi, nonummy eget tristique non, rhoncus non leo. Nulla pulvinar eleifend sem. Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur? Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Mauris suscipit, ligula sit amet pharetra semper, nibh ante cursus purus, vel sagittis velit mauris vel metus. Donec quis nibh at felis congue commodo. Curabitur sagittis hendrerit ante.</span></p><p style=\"margin-right: 0px; margin-bottom: 8px; margin-left: 0px; text-indent: 20px; font-family: &quot;Trebuchet MS&quot;, &quot;Geneva CE&quot;, lucida, sans-serif; font-size: 13px; text-align: justify;\"><span style=\"font-family: Helvetica;\">&lt;script&gt;alert(\"OK\");&lt;/script&gt;</span></p>', 'Test article from test10', '', 11, 20, 21, 22, NULL, 6, 7, 10);
+(21, 1, '                <p style=\"color: rgb(0, 0, 0); font-family: &amp;quot;Trebuchet MS&amp;quot;,&amp;quot;Geneva CE&amp;quot;,lucida,sans-serif; font-size: 13px; font-style: normal; font-variant: normal; font-weight: 400; letter-spacing: normal; margin-bottom: 8px; margin-left: 0px; margin-right: 0px; margin-top: 0px; orphans: 2; text-align: justify; text-decoration: none; text-indent: 20px; text-transform: none; -webkit-text-stroke-width: 0px; white-space: normal; word-spacing: 0px;\">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Etiam commodo dui eget wisi. Nunc auctor. Nulla turpis magna, cursus sit amet, suscipit a, interdum id, felis. Etiam dui sem, fermentum vitae, sagittis id, malesuada in, quam. Vestibulum fermentum tortor id mi. Integer vulputate sem a nibh rutrum consequat. Maecenas sollicitudin. Curabitur sagittis hendrerit ante. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Nunc auctor. Morbi scelerisque luctus velit. Nulla quis diam. Aenean fermentum risus id tortor. Ut tempus purus at lorem. Duis ante orci, molestie vitae vehicula venenatis, tincidunt ac pede. Curabitur sagittis hendrerit ante. Morbi imperdiet, mauris ac auctor dictum, nisl ligula egestas nulla, et sollicitudin sem purus in lacus. Etiam dui sem, fermentum vitae, sagittis id, malesuada in, quam. Nulla non lectus sed nisl molestie malesuada.\r\n</p><span style=\'display: inline !important; float: none; background-color: rgb(252, 249, 232); color: rgb(0, 0, 0); font-family: \"Trebuchet MS\",\"Geneva CE\",lucida,sans-serif; font-size: 13px; font-style: normal; font-variant: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: justify; text-decoration: none; text-indent: 0px; text-transform: none; -webkit-text-stroke-width: 0px; white-space: normal; word-spacing: 0px;\'>\r\n</span><p style=\"color: rgb(0, 0, 0); font-family: &amp;quot;Trebuchet MS&amp;quot;,&amp;quot;Geneva CE&amp;quot;,lucida,sans-serif; font-size: 13px; font-style: normal; font-variant: normal; font-weight: 400; letter-spacing: normal; margin-bottom: 8px; margin-left: 0px; margin-right: 0px; margin-top: 0px; orphans: 2; text-align: justify; text-decoration: none; text-indent: 20px; text-transform: none; -webkit-text-stroke-width: 0px; white-space: normal; word-spacing: 0px;\">\r\n	In convallis. Praesent id justo in neque elementum ultrices. Mauris metus. Nullam eget nisl. Integer malesuada. Praesent id justo in neque elementum ultrices. Integer lacinia. Aliquam in lorem sit amet leo accumsan lacinia. Nullam faucibus mi quis velit. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.\r\n</p>            ', 'Lorem Ipsum dolor', '/web/Views/img/1d9aebbdbab11c201e1296adc21ca4c71c4dacb6.jpg,/web/Views/img/e5dd5aec8ea76ea4a4b51e1c26ea672f1c19a13e.jpg,/web/Views/img/4cf2f3e1c23cbd36f90af952a3a8d6bd949c790d.jpg,/web/Views/img/7342f7569cceada3aa4d16c426fbc9ac1901a5f1.jpg', 6, 22, 20, 21, '/web/Views/img/1d9aebbdbab11c201e1296adc21ca4c71c4dacb6.jpg', 11, 7, 10),
+(22, 1, '<p style=\"margin-right: 0px; margin-bottom: 8px; margin-left: 0px; text-indent: 20px; font-family: &quot;Trebuchet MS&quot;, &quot;Geneva CE&quot;, lucida, sans-serif; font-size: 13px; text-align: justify;\">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Etiam quis quam. Etiam posuere lacus quis dolor. Fusce tellus. Fusce tellus odio, dapibus id fermentum quis, suscipit id erat. Curabitur vitae diam non enim vestibulum interdum. Duis risus. Phasellus enim erat, vestibulum vel, aliquam a, posuere eu, velit. In enim a arcu imperdiet malesuada. Integer lacinia. Vestibulum fermentum tortor id mi. Aliquam ante. Nam sed tellus id magna elementum tincidunt. Curabitur vitae diam non enim vestibulum interdum. Vivamus ac leo pretium faucibus. Nunc dapibus tortor vel mi dapibus sollicitudin.</p><p style=\"margin-right: 0px; margin-bottom: 8px; margin-left: 0px; text-indent: 20px; font-family: &quot;Trebuchet MS&quot;, &quot;Geneva CE&quot;, lucida, sans-serif; font-size: 13px; text-align: justify;\">Mauris dolor felis, sagittis at, luctus sed, aliquam non, tellus. Vestibulum fermentum tortor id mi. Vivamus porttitor turpis ac leo. Duis condimentum augue id magna semper rutrum. Fusce nibh. Pellentesque sapien. Maecenas ipsum velit, consectetuer eu lobortis ut, dictum at dui. Integer tempor. Vivamus ac leo pretium faucibus. Fusce wisi.</p>', 'Lorem ipsum', '/web/Views/img/52db65a01b88a5b4f7026247f73190e015ab95eb.jpg,/web/Views/img/4094e215e87bc3016bbbab57528d69eae49d0872.jpg,/web/Views/img/4a196c952a8026a810440e22b1c8372b6aadf800.jpg,/web/Views/img/235eda115e03a8f8ad111c14a93589fac417c5cb.jpg', 15, 28, 24, 25, '/web/Views/img/52db65a01b88a5b4f7026247f73190e015ab95eb.jpg', 12, 13, 14),
+(23, 1, '<b>lorem ipsum</b>', 'sdfghjkl', '/web/Views/img/1d9aebbdbab11c201e1296adc21ca4c71c4dacb6.jpg,/web/Views/img/e5dd5aec8ea76ea4a4b51e1c26ea672f1c19a13e.jpg,/web/Views/img/4cf2f3e1c23cbd36f90af952a3a8d6bd949c790d.jpg,/web/Views/img/7342f7569cceada3aa4d16c426fbc9ac1901a5f1.jpg,/web/Views/img/b0470b6edc4fb2a11ce9b7264104be582d9e99cd.jpg,', 17, 29, 30, 31, '/web/Views/img/1d9aebbdbab11c201e1296adc21ca4c71c4dacb6.jpg', 12, 13, 14);
 
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `reviews`
+-- Table structure for table `reviews`
 --
 
-DROP TABLE IF EXISTS `reviews`;
-CREATE TABLE IF NOT EXISTS `reviews` (
-  `id_review` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `reviews` (
+  `id_review` int(11) NOT NULL,
   `review_author` int(11) DEFAULT NULL,
-  `points` float DEFAULT NULL,
   `text` varchar(500) COLLATE utf8mb4_czech_ci DEFAULT NULL,
-  PRIMARY KEY (`id_review`),
-  KEY `review_author` (`review_author`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_czech_ci;
+  `text_points` int(11) DEFAULT -1,
+  `photo_points` int(11) DEFAULT -1,
+  `location_points` int(11) DEFAULT -1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_czech_ci;
 
 --
--- Vypisuji data pro tabulku `reviews`
+-- Dumping data for table `reviews`
 --
 
-INSERT INTO `reviews` (`id_review`, `review_author`, `points`, `text`) VALUES
-(1, 5, 8, 'Very nice'),
-(2, 6, 4, 'Very nice'),
-(3, 7, 3, 'Very nice'),
-(19, 5, 5, '                        Text here...100'),
-(20, 6, 5, 'test 3 says OK'),
-(21, 7, 10, '                        Test 4 says OK'),
-(22, 10, 1, '<p>                        test7 says OK</p>');
+INSERT INTO `reviews` (`id_review`, `review_author`, `text`, `text_points`, `photo_points`, `location_points`) VALUES
+(20, 7, 'test4 says yes', 1, 2, 3),
+(21, 10, '                        test7 says yes', 4, 5, 6),
+(22, 11, '                        test 10 approves', 7, 8, 9),
+(24, 13, '                        approved', 6, 7, 8),
+(25, 14, '                        approved', 1, 5, 4),
+(28, 12, '                        Text here...\r\n                    ', 10, 10, 10),
+(29, 12, 'approved', 10, 10, 10),
+(30, 13, '                        Text here...\r\n                    ', 1, 1, 1),
+(31, 14, '                        Text here...\r\n                    ', 2, 2, 2);
 
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `users`
+-- Table structure for table `users`
 --
 
-DROP TABLE IF EXISTS `users`;
-CREATE TABLE IF NOT EXISTS `users` (
-  `id_user` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `users` (
+  `id_user` int(11) NOT NULL,
   `nick` varchar(20) COLLATE utf8mb4_czech_ci DEFAULT NULL,
   `name` varchar(45) COLLATE utf8mb4_czech_ci DEFAULT NULL,
   `surname` varchar(45) COLLATE utf8mb4_czech_ci DEFAULT NULL,
   `email` varchar(50) COLLATE utf8mb4_czech_ci DEFAULT NULL,
   `password` varchar(45) COLLATE utf8mb4_czech_ci DEFAULT NULL,
   `privilege` varchar(10) COLLATE utf8mb4_czech_ci DEFAULT NULL,
-  `active` tinyint(4) DEFAULT NULL,
-  PRIMARY KEY (`id_user`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_czech_ci;
+  `active` tinyint(4) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_czech_ci;
 
 --
--- Vypisuji data pro tabulku `users`
+-- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`id_user`, `nick`, `name`, `surname`, `email`, `password`, `privilege`, `active`) VALUES
-(2, 'test', 'testAdmin', 'test', 'test', 'test', 'admin', 1),
-(5, 'test2', 'test', 'test', 'aitakaitov@gmail.com', 'test2', 'admin', 1),
-(6, 'test3', 'test', 'test', 'aitakaitov@gmail.com', 'test3', 'reviewer', 1),
-(7, 'test4', 'test4', 'test4', 'a@g.com', 'test4', 'reviewer', 1),
+(5, 'test2', 'test', 'test', 'aitakaitov@gmail.com', 'test2', 'admin', 0),
+(6, 'test3', 'test', 'test', 'aitakaitov@gmail.com', 'test3', 'reviewer', 0),
+(7, 'test4', 'test4', 'test4', 'a@g.com', 'test4', 'reviewer', 0),
 (9, 'A', 'A', 'A', 'A@A.A', 'a', 'user', 0),
-(10, 'test7', 'test7', 'test7', 't@t.t', 'test7', 'reviewer', 1),
-(11, 'test10', 'test', 'deset', 'test10@test10.test10', 'test10', 'user', 1);
+(10, 'test7', 'test7', 'test7', 't@t.t', 'test7', 'reviewer', 0),
+(11, 'test10', 'test', 'deset', 'test10@test10.test10', 'test10', 'reviewer', 0),
+(12, 'reviewer1', 'reviewer1', 'reviewer', 'a@a.a', 'reviewer1', 'reviewer', 1),
+(13, 'reviewer2', 'reviewer2', 'reviewer', 'a@a.a', 'reviewer2', 'reviewer', 1),
+(14, 'reviewer3', 'reviewer3', 'reviewer', 'a@a.a', 'reviewer3', 'reviewer', 1),
+(15, 'user1', 'user1', 'user ', 'a@a.aaa', 'user1', 'user', 1),
+(16, 'admin', 'admin', 'admin', 'a@a.a', 'admin', 'admin', 1),
+(17, 'user2', 'user2', 'user2', 'a@a.a', 'user2', 'user', 1);
 
 --
--- Omezení pro exportované tabulky
+-- Indexes for dumped tables
 --
 
 --
--- Omezení pro tabulku `articles`
+-- Indexes for table `articles`
+--
+ALTER TABLE `articles`
+  ADD PRIMARY KEY (`id_article`),
+  ADD KEY `article_author` (`article_author`),
+  ADD KEY `review1` (`review1`),
+  ADD KEY `review2` (`review2`),
+  ADD KEY `review3` (`review3`),
+  ADD KEY `reviewer1` (`reviewer1`),
+  ADD KEY `reviewer2` (`reviewer2`),
+  ADD KEY `reviewer3` (`reviewer3`);
+
+--
+-- Indexes for table `reviews`
+--
+ALTER TABLE `reviews`
+  ADD PRIMARY KEY (`id_review`),
+  ADD KEY `review_author` (`review_author`);
+
+--
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id_user`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `articles`
+--
+ALTER TABLE `articles`
+  MODIFY `id_article` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+
+--
+-- AUTO_INCREMENT for table `reviews`
+--
+ALTER TABLE `reviews`
+  MODIFY `id_review` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `articles`
 --
 ALTER TABLE `articles`
   ADD CONSTRAINT `article_author` FOREIGN KEY (`article_author`) REFERENCES `users` (`id_user`) ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -139,7 +187,7 @@ ALTER TABLE `articles`
   ADD CONSTRAINT `review3` FOREIGN KEY (`review3`) REFERENCES `reviews` (`id_review`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Omezení pro tabulku `reviews`
+-- Constraints for table `reviews`
 --
 ALTER TABLE `reviews`
   ADD CONSTRAINT `review_author` FOREIGN KEY (`review_author`) REFERENCES `users` (`id_user`) ON DELETE NO ACTION ON UPDATE NO ACTION;

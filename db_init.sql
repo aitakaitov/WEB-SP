@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.5
+-- version 4.9.2
 -- https://www.phpmyadmin.net/
 --
--- Počítač: 127.0.0.1:3306
--- Vytvořeno: Čtv 12. pro 2019, 13:44
--- Verze serveru: 5.7.26
--- Verze PHP: 7.2.18
+-- Host: 127.0.0.1
+-- Generation Time: Dec 12, 2019 at 02:17 PM
+-- Server version: 10.4.10-MariaDB
+-- PHP Version: 7.3.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -19,81 +19,121 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Databáze: `conference_db`
+-- Database: `conference_db`
 --
 
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `articles`
+-- Table structure for table `articles`
 --
 
-DROP TABLE IF EXISTS `articles`;
-CREATE TABLE IF NOT EXISTS `articles` (
-  `id_article` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `articles` (
+  `id_article` int(11) NOT NULL,
   `approved` tinyint(4) DEFAULT NULL,
   `text` varchar(3000) COLLATE utf8mb4_czech_ci DEFAULT NULL,
   `title` varchar(50) COLLATE utf8mb4_czech_ci DEFAULT NULL,
-  `images` varchar(250) COLLATE utf8mb4_czech_ci DEFAULT NULL,
+  `images` varchar(350) COLLATE utf8mb4_czech_ci DEFAULT NULL,
   `article_author` int(11) DEFAULT NULL,
   `review1` int(11) DEFAULT NULL,
   `review2` int(11) DEFAULT NULL,
   `review3` int(11) DEFAULT NULL,
-  `introduction_image` varchar(60) COLLATE utf8mb4_czech_ci DEFAULT NULL,
+  `introduction_image` varchar(80) COLLATE utf8mb4_czech_ci DEFAULT NULL,
   `reviewer1` int(11) DEFAULT NULL,
   `reviewer2` int(11) DEFAULT NULL,
-  `reviewer3` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id_article`),
-  KEY `article_author` (`article_author`),
-  KEY `review1` (`review1`),
-  KEY `review2` (`review2`),
-  KEY `review3` (`review3`),
-  KEY `reviewer1` (`reviewer1`),
-  KEY `reviewer2` (`reviewer2`),
-  KEY `reviewer3` (`reviewer3`)
+  `reviewer3` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_czech_ci;
 
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `reviews`
+-- Table structure for table `reviews`
 --
 
-DROP TABLE IF EXISTS `reviews`;
-CREATE TABLE IF NOT EXISTS `reviews` (
-  `id_review` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `reviews` (
+  `id_review` int(11) NOT NULL,
   `review_author` int(11) DEFAULT NULL,
-  `points` float DEFAULT NULL,
   `text` varchar(500) COLLATE utf8mb4_czech_ci DEFAULT NULL,
-  PRIMARY KEY (`id_review`),
-  KEY `review_author` (`review_author`)
+  `text_points` int(11) DEFAULT -1,
+  `photo_points` int(11) DEFAULT -1,
+  `location_points` int(11) DEFAULT -1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_czech_ci;
 
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `users`
+-- Table structure for table `users`
 --
 
-DROP TABLE IF EXISTS `users`;
-CREATE TABLE IF NOT EXISTS `users` (
-  `id_user` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `users` (
+  `id_user` int(11) NOT NULL,
   `nick` varchar(20) COLLATE utf8mb4_czech_ci DEFAULT NULL,
   `name` varchar(45) COLLATE utf8mb4_czech_ci DEFAULT NULL,
   `surname` varchar(45) COLLATE utf8mb4_czech_ci DEFAULT NULL,
   `email` varchar(50) COLLATE utf8mb4_czech_ci DEFAULT NULL,
   `password` varchar(45) COLLATE utf8mb4_czech_ci DEFAULT NULL,
   `privilege` varchar(10) COLLATE utf8mb4_czech_ci DEFAULT NULL,
-  `active` tinyint(4) DEFAULT NULL,
-  PRIMARY KEY (`id_user`)
+  `active` tinyint(4) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_czech_ci;
 
 --
--- Omezení pro exportované tabulky
+-- Indexes for dumped tables
 --
 
 --
--- Omezení pro tabulku `articles`
+-- Indexes for table `articles`
+--
+ALTER TABLE `articles`
+  ADD PRIMARY KEY (`id_article`),
+  ADD KEY `article_author` (`article_author`),
+  ADD KEY `review1` (`review1`),
+  ADD KEY `review2` (`review2`),
+  ADD KEY `review3` (`review3`),
+  ADD KEY `reviewer1` (`reviewer1`),
+  ADD KEY `reviewer2` (`reviewer2`),
+  ADD KEY `reviewer3` (`reviewer3`);
+
+--
+-- Indexes for table `reviews`
+--
+ALTER TABLE `reviews`
+  ADD PRIMARY KEY (`id_review`),
+  ADD KEY `review_author` (`review_author`);
+
+--
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id_user`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `articles`
+--
+ALTER TABLE `articles`
+  MODIFY `id_article` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `reviews`
+--
+ALTER TABLE `reviews`
+  MODIFY `id_review` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `articles`
 --
 ALTER TABLE `articles`
   ADD CONSTRAINT `article_author` FOREIGN KEY (`article_author`) REFERENCES `users` (`id_user`) ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -105,7 +145,7 @@ ALTER TABLE `articles`
   ADD CONSTRAINT `review3` FOREIGN KEY (`review3`) REFERENCES `reviews` (`id_review`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Omezení pro tabulku `reviews`
+-- Constraints for table `reviews`
 --
 ALTER TABLE `reviews`
   ADD CONSTRAINT `review_author` FOREIGN KEY (`review_author`) REFERENCES `users` (`id_user`) ON DELETE NO ACTION ON UPDATE NO ACTION;
